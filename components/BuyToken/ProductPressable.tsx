@@ -1,7 +1,8 @@
 import React, { memo } from "react";
 import { View, Text, Pressable } from "react-native";
-import SVGComponent from "../SVGComponent";
 import { styles } from "./style";
+import LottieView from "lottie-react-native";
+import { useTranslation } from "../../TranslationContext"; // Make sure to import this
 
 interface ProductPressableProps {
   pkg: {
@@ -23,19 +24,29 @@ function formatIdentifier(identifier: string): string {
 const ProductPressable: React.FC<ProductPressableProps> = ({
   pkg,
   purchaseProduct,
-}) => (
-  <Pressable style={styles.productContainer} onPress={() => purchaseProduct(pkg)}>
-    <View style={styles.flex}>
-      <SVGComponent iconName="jeton" customWidth="45" customHeight="45" />
+}) => {
+  const { t } = useTranslation(); // Destructure the t function for translations
+
+  return (
+    <Pressable
+      style={styles.productContainer}
+      onPress={() => purchaseProduct(pkg)}
+    >
+      <LottieView
+        source={require("./icon.json")}
+        autoPlay
+        loop
+        style={{ width: 55, height: 85 }}
+      />
       <Text style={styles.productTitle}>
         {formatIdentifier(pkg.product.identifier)}
       </Text>
-    </View>
-    <View style={styles.buyContent}>
-      <Text style={styles.productPrice}>{pkg.product.priceString}</Text>
-      <Text style={styles.buyButton}>Satın Al</Text>
-    </View>
-  </Pressable>
-);
+      <View style={styles.buyContent}>
+        <Text style={styles.productPrice}>{pkg.product.priceString}</Text>
+        <Text style={styles.buyButton}>{t("buy_now")}</Text>
+      </View>
+    </Pressable>
+  );
+};
 
 export default memo(ProductPressable);

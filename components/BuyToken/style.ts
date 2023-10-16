@@ -43,22 +43,27 @@ export const styles = StyleSheet.create({
     borderRadius: 14,
   },
   buyContent: {
-    backgroundColor: "#feeceb",
     display: "flex",
     alignItems: "center",
     padding: 10,
-    width: 80,
   },
   productContainer: {
-    padding: 15,
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#c98aff",
+    backgroundColor: "#fff7e4",
     marginVertical: 8,
-    marginHorizontal: 10,
+    marginHorizontal: 8,
+    padding: 10,
+    width: 150,
     borderRadius: 8,
+  },
+  flexBox: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
   },
   flex: {
     display: "flex",
@@ -74,17 +79,39 @@ export const styles = StyleSheet.create({
   productTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
-    paddingLeft: 10,
-    color: "yellow",
+    color: "#101010",
   },
 
   productPrice: {
     fontSize: 16,
-    color: "#333",
+    color: "#101010",
   },
   productDescription: {
     fontSize: 14,
     color: "#666",
+  },
+  bestOfferContainer: {
+    position: "absolute",
+    top: 10, // Adjust the position as necessary
+    left: -10, // This will move it slightly to the left
+    backgroundColor: "#FF6347", // Tomato color, change as desired
+    borderRadius: 15, // Roundness for the label
+    transform: [{ rotate: "-45deg" }], // This will rotate the label
+    zIndex: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  bestOfferText: {
+    color: "white",
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    fontSize: 12,
+    fontWeight: "bold",
   },
 });

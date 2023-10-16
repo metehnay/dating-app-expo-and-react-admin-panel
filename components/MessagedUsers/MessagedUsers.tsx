@@ -10,11 +10,13 @@ import {
 } from "react-native";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import * as Notifications from "expo-notifications";
 
 // Assuming the firebaseApp is correctly initialized in your firebaseConfig.js
 import { firebaseApp } from "../../firebaseConfig";
 import styles from "./style";
 import SVGComponent from "../SVGComponent";
+import { useTranslation } from "../../TranslationContext";
 
 // Interface definitions for TypeScript
 interface User {
@@ -38,6 +40,7 @@ const ConversationsList = ({ navigation }: any) => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const i18n = useTranslation();
 
   // Authentication state observer to get the current user's ID.
   useEffect(() => {
@@ -63,7 +66,7 @@ const ConversationsList = ({ navigation }: any) => {
           const fetchedConversations: Conversation[] = await Promise.all(
             snapshot.docs.map(async (doc) => {
               const data = doc.data() as Conversation;
-                  const conversationId = doc.id;
+              const conversationId = doc.id;
               const otherUserId = data.userIds.find(
                 (id) => id !== currentUserId
               );
@@ -83,7 +86,8 @@ const ConversationsList = ({ navigation }: any) => {
                 return {
                   ...data,
                   otherUser,
-                  conversationId, unread: {
+                  conversationId,
+                  unread: {
                     ...data.unread,
                     [currentUserId]: unreadStatusForCurrentUser,
                   },
@@ -100,30 +104,72 @@ const ConversationsList = ({ navigation }: any) => {
     }
   }, [currentUserId]);
 
-  // Handles the logic when a conversation is pressed.
- const handleConversationPress = (conversation: Conversation) => {
-   if (conversation.otherUser) {
-     // Ensure we have both currentUserId and conversation.id before updating
-     if (
-       currentUserId &&
-       conversation.id &&
-       conversation.unread &&
-       conversation.unread[currentUserId]
-     ) {
-       // Update the unread status for the current user to false
-       firebaseApp
-         .firestore()
-         .collection("conversations")
-         .doc(conversation.id)
-         .update({
-           [`unread.${currentUserId as string}`]: false,
-         });
-     }
+  // [1] Ask for permission and get the token.
+  useEffect(() => {
+    const registerForPushNotifications = async () => {
+      let token;
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
 
-     // Navigate to the MessageScreen with the other user's details
-     navigation.navigate("MessageScreen", { user: conversation.otherUser });
-   }
- };
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      if (finalStatus !== "granted") {
+        console.warn("Failed to get push token for push notification!");
+        return;
+      }
+
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+
+      // Save the token to the user's document in Firestore
+      if (currentUserId) {
+        firebaseApp.firestore().collection("users").doc(currentUserId).update({
+          expoPushToken: token,
+        });
+      }
+    };
+
+    registerForPushNotifications();
+  }, [currentUserId]);
+
+    useEffect(() => {
+      const subscription =
+        Notifications.addNotificationResponseReceivedListener((response) => {
+          const data = response.notification.request.content.data;
+          // Assuming the data contains the user id, navigate to the specific conversation screen
+          navigation.navigate("MessageScreen", { user: data.user });
+        });
+
+      return () => subscription.remove();
+    }, [navigation]);
+
+  // Handles the logic when a conversation is pressed.
+  const handleConversationPress = (conversation: Conversation) => {
+    if (conversation.otherUser) {
+      // Ensure we have both currentUserId and conversation.id before updating
+      if (
+        currentUserId &&
+        conversation.id &&
+        conversation.unread &&
+        conversation.unread[currentUserId]
+      ) {
+        // Update the unread status for the current user to false
+        firebaseApp
+          .firestore()
+          .collection("conversations")
+          .doc(conversation.id)
+          .update({
+            [`unread.${currentUserId as string}`]: false,
+          });
+      }
+
+      // Navigate to the MessageScreen with the other user's details
+      navigation.navigate("MessageScreen", { user: conversation.otherUser });
+    }
+  };
   // Helper function to truncate the latest message in the conversation preview.
   const truncateMessage = (message: string) => {
     return message.length > 25 ? message.substring(0, 25) + "..." : message;
@@ -207,7 +253,7 @@ const ConversationsList = ({ navigation }: any) => {
           )}
         />
       ) : (
-        <Text>Henüz bir mesajınız yok.</Text>
+        <Text>{i18n.t("NoMessageYet")}</Text>
       )}
     </View>
   );

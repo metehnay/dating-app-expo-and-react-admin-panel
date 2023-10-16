@@ -20,7 +20,6 @@ const Anasayfa = ({ navigation, initialized }: any) => {
     }
 
     const fetchGenderAndInitialUsers = async () => {
-
       try {
         const docSnapshot = await firebaseApp
           .firestore()
@@ -38,7 +37,7 @@ const Anasayfa = ({ navigation, initialized }: any) => {
           .firestore()
           .collection("users")
           .where("gender", "==", gender)
-          .limit(20)
+          .limit(8)
           .get();
 
         const fetchedUsers = snapshot.docs.map((doc) => doc.data());

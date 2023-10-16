@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { useTranslation } from './../../TranslationContext';
 
 interface BirthdayPickerProps {
   isVisible: boolean;
@@ -30,6 +31,8 @@ const BirthdayPicker: React.FC<BirthdayPickerProps> = ({
   const years = Array.from({ length: 101 }, (_, i) =>
     (currentYear - i).toString()
   );
+    const i18n = useTranslation();
+
 
   return (
     <Modal
@@ -40,7 +43,7 @@ const BirthdayPicker: React.FC<BirthdayPickerProps> = ({
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.pickerContainer}>
-          <Text style={styles.label}>Gün</Text>
+          <Text style={styles.label}>{i18n.t("birthDay")}</Text>
           <Picker
             selectedValue={selectedDay}
             style={styles.picker}
@@ -52,7 +55,7 @@ const BirthdayPicker: React.FC<BirthdayPickerProps> = ({
           </Picker>
         </View>
         <View style={styles.pickerContainer}>
-          <Text style={styles.label}>Ay</Text>
+          <Text style={styles.label}>{i18n.t("birthMonth")}</Text>
           <Picker
             selectedValue={selectedMonth}
             style={styles.picker}
@@ -66,7 +69,7 @@ const BirthdayPicker: React.FC<BirthdayPickerProps> = ({
           </Picker>
         </View>
         <View style={styles.pickerContainer}>
-          <Text style={styles.label}>Yıl</Text>
+          <Text style={styles.label}>{i18n.t("birthYear")}</Text>
           <Picker
             selectedValue={selectedYear}
             style={styles.picker}
@@ -78,7 +81,7 @@ const BirthdayPicker: React.FC<BirthdayPickerProps> = ({
           </Picker>
         </View>
         <Button
-          title="Onayla"
+          title={i18n.t("ConfirmButton")}
           onPress={() => {
             onSelectDate(selectedDay, selectedMonth, selectedYear);
             onClose();

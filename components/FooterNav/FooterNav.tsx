@@ -47,33 +47,32 @@ const FooterNav = ({ navigationRef }: any) => {
     }
   }, []);
 
-  const handleNavigation = (route: string) => {
-    if (route === "FilterScreen" && (!userData || !userData.isVip)) {
-      setShowModal(true);
-      return;
-    }
+const handleNavigation = (route: string) => {
+  // Comment out the following lines to temporarily disable the isVip logic for FilterScreen
+  // if (route === "FilterScreen" && (!userData || !userData.isVip)) {
+  //   setShowModal(true);
+  //   return;
+  // }
 
-    navigationRef.current?.navigate(route);
-    setActiveRoute(route);
-  };
-
+  navigationRef.current?.navigate(route);
+  setActiveRoute(route);
+};
   const navItems = [
-    { route: "Anasayfa", icon: "mood", displayName: i18n.t("homePage") },
+    { route: "Anasayfa", icon: "mood", displayName: "Match" },
     {
       route: "FilterScreen",
       icon: "search",
-      displayName: i18n.t("filterScreen"),
     },
     {
       route: "JetonScreen",
       icon: "shop",
-      displayName: i18n.t("buyJetons"),
       customSize: 45,
     },
     {
       route: "ConversationsList",
       icon: "favorites",
       displayName: i18n.t("myMessages"),
+      customSize: 25,
     },
     { route: "Profile", icon: "profile", displayName: i18n.t("profileScreen") },
   ];
@@ -114,14 +113,14 @@ const FooterNav = ({ navigationRef }: any) => {
                 iconName={item.icon}
                 customWidth={item.customSize || 24}
                 customHeight={item.customSize || 24}
-                color={activeRoute === item.route ? "#c48cbc" : "#101010"}
+                color={activeRoute === item.route ? "#2cc1d7" : "#101010"}
               />
               {activeRoute === item.route && (
                 <Text
                   style={{
                     marginTop: 4,
                     fontSize: 9,
-                    color: activeRoute === item.route ? "#c48cbc" : "#101010",
+                    color: activeRoute === item.route ? "#2cc1d7" : "#101010",
                     fontWeight: activeRoute === item.route ? "bold" : "normal",
                   }}
                 >

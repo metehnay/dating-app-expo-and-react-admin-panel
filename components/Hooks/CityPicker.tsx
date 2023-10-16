@@ -16,88 +16,49 @@ interface CityPickerProps {
 }
 
 const cities = [
-  "Adana",
-  "Adıyaman",
-  "Afyonkarahisar",
-  "Ağrı",
-  "Aksaray",
-  "Amasya",
-  "Ankara",
-  "Antalya",
-  "Ardahan",
-  "Artvin",
-  "Aydın",
-  "Balıkesir",
-  "Bartın",
-  "Batman",
-  "Bayburt",
-  "Bilecik",
-  "Bingöl",
-  "Bitlis",
-  "Bolu",
-  "Burdur",
-  "Bursa",
-  "Çanakkale",
-  "Çankırı",
-  "Çorum",
-  "Denizli",
-  "Diyarbakır",
-  "Düzce",
-  "Edirne",
-  "Elazığ",
-  "Erzincan",
-  "Erzurum",
-  "Eskişehir",
-  "Gaziantep",
-  "Giresun",
-  "Gümüşhane",
-  "Hakkari",
-  "Hatay",
-  "Iğdır",
-  "Isparta",
-  "İstanbul",
-  "İzmir",
-  "Kahramanmaraş",
-  "Karabük",
-  "Karaman",
-  "Kars",
-  "Kastamonu",
-  "Kayseri",
-  "Kırıkkale",
-  "Kırklareli",
-  "Kırşehir",
-  "Kilis",
-  "Kocaeli",
-  "Konya",
-  "Kütahya",
-  "Malatya",
-  "Manisa",
-  "Mardin",
-  "Mersin",
-  "Muğla",
-  "Muş",
-  "Nevşehir",
-  "Niğde",
-  "Ordu",
-  "Osmaniye",
-  "Rize",
-  "Sakarya",
-  "Samsun",
-  "Siirt",
-  "Sinop",
-  "Sivas",
-  "Şanlıurfa",
-  "Şırnak",
-  "Tekirdağ",
-  "Tokat",
-  "Trabzon",
-  "Tunceli",
-  "Uşak",
-  "Van",
-  "Yalova",
-  "Yozgat",
-  "Zonguldak",
+  // Turkish Speaking Country
+  { name: "Turkey", flag: "🇹🇷" },
+
+  // English Speaking Countries
+  { name: "United States", flag: "🇺🇸" },
+  { name: "United Kingdom", flag: "🇬🇧" },
+  { name: "Australia", flag: "🇦🇺" },
+  { name: "New Zealand", flag: "🇳🇿" },
+  { name: "Ireland", flag: "🇮🇪" },
+  { name: "South Africa", flag: "🇿🇦" }, // English is one of the official languages
+  { name: "India", flag: "🇮🇳" }, // English is one of the official languages
+  { name: "Pakistan", flag: "🇵🇰" }, // English is one of the official languages
+  { name: "Nigeria", flag: "🇳🇬" },
+  { name: "Philippines", flag: "🇵🇭" }, // English is one of the official languages
+  { name: "Singapore", flag: "🇸🇬" }, // English is one of the official languages
+  { name: "Malta", flag: "🇲🇹" }, // English is one of the official languages
+  { name: "Jamaica", flag: "🇯🇲" },
+
+  // Spanish Speaking Countries
+  { name: "Spain", flag: "🇪🇸" },
+  { name: "Mexico", flag: "🇲🇽" },
+  { name: "Argentina", flag: "🇦🇷" },
+  { name: "Peru", flag: "🇵🇪" },
+  { name: "Venezuela", flag: "🇻🇪" },
+  { name: "Chile", flag: "🇨🇱" },
+  { name: "Colombia", flag: "🇨🇴" },
+
+  // French Speaking Countries
+  { name: "France", flag: "🇫🇷" },
+  { name: "Canada", flag: "🇨🇦" }, // French is one of the official languages
+  { name: "Belgium", flag: "🇧🇪" }, // French is one of the official languages
+
+  // German Speaking Countries
+  { name: "Germany", flag: "🇩🇪" },
+  { name: "Austria", flag: "🇦🇹" },
+  { name: "Switzerland", flag: "🇨🇭" }, // German is one of the official languages
+
+  // Italian Speaking Countries
+  { name: "Italy", flag: "🇮🇹" },
+  { name: "San Marino", flag: "🇸🇲" },
+  { name: "Vatican City", flag: "🇻🇦" },
 ];
+
 
 const CityPicker: React.FC<CityPickerProps> = ({
   isVisible,
@@ -106,7 +67,7 @@ const CityPicker: React.FC<CityPickerProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const filteredCities = cities.filter((city) =>
-    city.toLowerCase().includes(searchQuery.toLowerCase())
+    city.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -129,11 +90,11 @@ const CityPicker: React.FC<CityPickerProps> = ({
         />
         <FlatList
           data={filteredCities}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
             <Pressable
               onPress={() => {
-                onSelectCity(item);
+                onSelectCity(item.name);
                 onClose();
               }}
             >
@@ -144,7 +105,7 @@ const CityPicker: React.FC<CityPickerProps> = ({
                   borderBottomColor: "#eee",
                 }}
               >
-                {item}
+                {item.name}{item.flag}
               </Text>
             </Pressable>
           )}

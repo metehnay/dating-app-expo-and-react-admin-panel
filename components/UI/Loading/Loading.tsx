@@ -42,7 +42,7 @@ const LoadingScreen: React.FC<LogoProps> = ({ loading }) => {
       <View style={styles.modalBackground}>
         <View style={styles.activityIndicatorWrapper}>
           <Animated.Image
-            source={require("../../../assets/images/home/logo-kahve.png")}
+            source={require("../../../assets/images/home/logoLoveify.png")}
             style={{ width: 244, height: 190, transform: [{ scale: scale }] }}
           />
         </View>

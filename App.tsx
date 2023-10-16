@@ -28,6 +28,7 @@ import SVGComponent from "./components/SVGComponent";
 import FilterScreen from './components/Filter/Filter';
 import NotificationScreen from "./components/Notification/Notification";
 import { TranslationProvider } from "./TranslationContext";
+import UserMatches from './components/UserMatches/UserMatches';
 
 const Theme = {
   ...DefaultTheme,
@@ -60,58 +61,59 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   enableScreens();
-  const navigationRef = useRef(null);
-  const [unreadMessages, setUnreadMessages] = useState(false);
+   const navigationRef = useRef(null);
+   const [unreadMessages, setUnreadMessages] = useState(false);
 
-  const [user, setUser] = useState<User | null>(null);
+   const [user, setUser] = useState<User | null>(null);
 
-  const [isAuth, setIsAuth] = useState(false);
-  const [initialized, setInitialized] = useState(false); // State to check if the app has completed its initial data retrieval
-  const [authListenerCompleted, setAuthListenerCompleted] = useState(false);
-  const [fontsLoaded] = useFonts({
-    Poppins: require("./assets/fonts/Poppins-Medium.ttf"),
-    PoppinsBold: require("./assets/fonts/Poppins-Black.ttf"),
-  });
+   const [isAuth, setIsAuth] = useState(false);
+   const [initialized, setInitialized] = useState(false); // State to check if the app has completed its initial data retrieval
+   const [authListenerCompleted, setAuthListenerCompleted] = useState(false);
+   const [fontsLoaded] = useFonts({
+     Poppins: require("./assets/fonts/Poppins-Medium.ttf"),
+     PoppinsBold: require("./assets/fonts/Poppins-Black.ttf"),
+   });
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        await AsyncStorage.setItem("user", JSON.stringify(firebaseUser));
-        setUser(firebaseUser);
-        setIsAuth(true);
-      } else {
-        await AsyncStorage.removeItem("user");
-        setUser(null);
-        setIsAuth(false);
-      }
-      setAuthListenerCompleted(true); // Important line
-    });
+   useEffect(() => {
+     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+       if (firebaseUser) {
+         await AsyncStorage.setItem("user", JSON.stringify(firebaseUser));
+         setUser(firebaseUser);
+         setIsAuth(true);
+       } else {
+         await AsyncStorage.removeItem("user");
+         setUser(null);
+         setIsAuth(false);
+       }
+       setAuthListenerCompleted(true); // Important line
+     });
 
-    return () => unsubscribe();
-  }, []);
+     return () => unsubscribe();
+   }, []);
 
-  // Fetch user from AsyncStorage
-  useEffect(() => {
-    if (authListenerCompleted) {
-      // Only run if auth listener has completed
-      const fetchUserFromStorage = async () => {
-        try {
-          const storedUserData = await AsyncStorage.getItem("user");
-          if (storedUserData) {
-            const parsedUserData = JSON.parse(storedUserData);
-            setUser(parsedUserData);
-            setIsAuth(true);
-            setIsFooterVisible(true);
-          }
-        } catch (error) {
-        } finally {
-          setInitialized(true);
-        }
-      };
+   // Fetch user from AsyncStorage
+   useEffect(() => {
+     if (authListenerCompleted) {
+       // Only run if auth listener has completed
+       const fetchUserFromStorage = async () => {
+         try {
+           const storedUserData = await AsyncStorage.getItem("user");
+           if (storedUserData) {
+             const parsedUserData = JSON.parse(storedUserData);
+             setUser(parsedUserData);
+             setIsAuth(true);
+             setIsFooterVisible(true);
+           }
+         } catch (error) {
+         } finally {
+           setInitialized(true);
+         }
+       };
 
-      fetchUserFromStorage();
-    }
-  }, [authListenerCompleted]);
+       fetchUserFromStorage();
+     }
+   }, [authListenerCompleted]);
+
 
   const [isFooterVisible, setIsFooterVisible] = useState(false);
 
@@ -167,7 +169,7 @@ function App() {
                 color: "#fff",
               },
               headerStyle: {
-                backgroundColor: "#c48cbc",
+                backgroundColor: "#2cc1d7",
               },
               headerTintColor: "#fff",
               headerTitleAlign: "center",
@@ -187,7 +189,13 @@ function App() {
                 headerTitle: "Filtre",
               }}
             />
-
+            <Stack.Screen
+              name="UserMatches"
+              component={UserMatches}
+              options={{
+                headerTitle: "Match",
+              }}
+            />
             <Stack.Screen
               name="Sign Up"
               component={SignUp}
@@ -201,7 +209,7 @@ function App() {
                 <Anasayfa {...props} initialized={initialized} />
               )}
               options={({ navigation }) => ({
-                headerTitle: "Anasayfa",
+                headerTitle: "LOVEIFY",
                 headerRight: () => (
                   <Pressable
                     onPress={() => navigation.navigate("NotificationScreen")}

@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
   button: {
-    backgroundColor: "#c48cbc",
+    backgroundColor: "#2cc1d7",
     padding: 10,
     width: "100%",
     borderRadius: 12,
@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   profil: {
-    color: "#c48cbc",
+    color: "#2cc1d7",
     padding: 8,
     fontFamily: "PoppinsBold",
     fontSize: 21,

@@ -275,7 +275,7 @@ const Profile = ({ navigation }: any) => {
   };
   return (
     <FlatList
-      contentContainerStyle={{ ...styles.container, minHeight: "120%" }}
+      contentContainerStyle={{ ...styles.container, minHeight: "150%" }}
       data={[1]}
       keyExtractor={(item) => item.toString()}
       renderItem={() => (
@@ -315,15 +315,18 @@ const Profile = ({ navigation }: any) => {
             <Dialog.Container visible={dialogVisible}>
               <Dialog.Title>{i18n.t("changeName")}</Dialog.Title>
               <Dialog.Input
-                label="Tam Adınız"
+                label={i18n.t("yourFullName")}
                 value={tempName}
                 onChangeText={setTempName}
               />
               <Dialog.Button
-                label="Cancel"
+                label={i18n.t("cancelText")}
                 onPress={() => setDialogVisible(false)}
               />
-              <Dialog.Button label="Update" onPress={handleUpdateName} />
+              <Dialog.Button
+                label={i18n.t("updateText")}
+                onPress={handleUpdateName}
+              />
             </Dialog.Container>
             <Pressable onPress={() => setModalBirthdayVisible(true)}>
               <Text style={styles.menuText}>🎂 {i18n.t("myBirthday")}</Text>
@@ -333,14 +336,7 @@ const Profile = ({ navigation }: any) => {
               onClose={() => setModalBirthdayVisible(false)}
               onSelectDate={handleBirthdaySelection}
             />
-            <Pressable onPress={showCityModal}>
-              <Text style={styles.menuText}>🏙️ {i18n.t("accountCity")}</Text>
-            </Pressable>
-            <CityPicker
-              isVisible={modalCityVisible}
-              onClose={() => setModalCityVisible(false)}
-              onSelectCity={handleCitySelection}
-            />
+           
             <Pressable onPress={() => setHobbiesModalVisible(true)}>
               <Text style={styles.menuText}>🎨 {i18n.t("myHobbies")}</Text>
             </Pressable>

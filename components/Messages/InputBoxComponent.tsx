@@ -3,6 +3,7 @@ import { View, TextInput, Pressable } from "react-native";
 import SVGComponent from "../SVGComponent";
 import styles from "./style";
 import ReusableModal from './../VIPModal/VIPModal';
+import { useTranslation } from "../../TranslationContext";
 
 interface InputBoxProps {
   text: string;
@@ -24,6 +25,7 @@ const InputBoxComponent: React.FC<InputBoxProps> = ({
   pickImage,
 }) => {
   const [showVipModal, setShowVipModal] = useState(false);
+  const i18n = useTranslation();
 
   return (
     <View style={{ flexDirection: "row" }}>
@@ -32,7 +34,7 @@ const InputBoxComponent: React.FC<InputBoxProps> = ({
           style={styles.input}
           value={text}
           onChangeText={setText}
-          placeholder="Mesaj yaz..."
+          placeholder={i18n.t("WriteMessage")}
         />
         <Pressable
           style={styles.emojiInsideInput}
@@ -84,8 +86,8 @@ const InputBoxComponent: React.FC<InputBoxProps> = ({
         onClose={() => setShowVipModal(false)}
         onConfirm={() => setShowVipModal(false)}
         iconName="vip1"
-        message="Bütün özelliklerin kilidini açmak için VIP edinin."
-        buttonText="Tamam"
+        message={i18n.t("getVipOpenFeatures")}
+        buttonText={i18n.t("closeText")}
       />
     </View>
   );

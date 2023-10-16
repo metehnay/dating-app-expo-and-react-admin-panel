@@ -6,6 +6,5 @@ export default StyleSheet.create({
     height: 190,
     width: 244,
     alignSelf: "center",
-    margin: 30,
   },
 });

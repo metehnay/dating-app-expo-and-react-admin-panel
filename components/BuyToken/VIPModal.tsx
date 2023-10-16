@@ -3,16 +3,19 @@ import { Modal, View, Text, Pressable, ScrollView } from "react-native";
 import { styles } from "./VIPstyles"; // adjust the path accordingly
 import { firebaseApp, db } from "../../firebaseConfig";
 import SVGComponent from "../SVGComponent";
+import { useTranslation } from "../../TranslationContext";
 
 const VIPModal = ({ isVisible, closeModal }: any) => {
   const [userJetons, setUserJetons] = useState<number>(0); // Make sure this line exists at the top of your BuyToken function
   const [selectedVIP, setSelectedVIP] = useState<keyof typeof VIP_COST | null>(
     null
   );
+    const { t } = useTranslation();
+
 
   const VIP_COST = {
-    "1 Aylık VIP": 1050,
-    "1 Yıllık VIP": 3000,
+    [t("one_month_vip_key")]: 1050,
+    [t("one_year_vip_key")]: 3000,
   };
 
   React.useEffect(() => {
@@ -36,15 +39,15 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
   }, []);
 
  const handleVIPPurchase = async () => {
-   if (!selectedVIP) {
-     alert("Lütfen bir VIP paketi seçin!");
-     return;
-   }
+    if (!selectedVIP) {
+      alert(t("please_select_a_vip_package_key")); // Translation: "Lütfen bir VIP paketi seçin!"
+      return;
+    }
 
-   if (userJetons < VIP_COST[selectedVIP]) {
-     alert("Yetersiz jeton!");
-     return;
-   }
+    if (userJetons < VIP_COST[selectedVIP]) {
+      alert(t("insufficient_jetons_key")); // Translation: "Yetersiz jeton!"
+      return;
+    }
 
    // Deduct jetons from local state
    setUserJetons((prevJetons) => prevJetons - VIP_COST[selectedVIP]);
@@ -53,15 +56,18 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
    const currentDate = new Date();
    let expirationDate: Date = new Date(currentDate); // Initialized to current date
 
-   if (selectedVIP === "1 Aylık VIP") {
-     expirationDate = new Date(
-       currentDate.setMonth(currentDate.getMonth() + 1)
-     ); // Add 1 month
-   } else if (selectedVIP === "1 Yıllık VIP") {
-     expirationDate = new Date(
-       currentDate.setFullYear(currentDate.getFullYear() + 1)
-     ); // Add 1 year
-   }
+    if (selectedVIP === t("one_month_vip_key")) {
+      // "1 Aylık VIP"
+      expirationDate = new Date(
+        currentDate.setMonth(currentDate.getMonth() + 1)
+      ); // Add 1 month
+    } else if (selectedVIP === t("one_year_vip_key")) {
+      // "1 Yıllık VIP"
+      expirationDate = new Date(
+        currentDate.setFullYear(currentDate.getFullYear() + 1)
+      ); // Add 1 year
+    }
+
 
    // Update jetons, isVip status, and VIP expiration date in Firebase
    const userId = firebaseApp.auth().currentUser?.uid;
@@ -76,9 +82,9 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
        isVip: true,
        vipExpiration: expirationDate.toISOString(), // Convert to string for easy storage and retrieval
      });
-     alert("VIP satın alma başarılı!");
+     alert(t("vip_purchase_successful_key")); // Translation: "VIP satın alma başarılı!"
    } catch (error) {
-     alert("Bir hata oluştu!");
+     alert(t("an_error_occurred_key")); // Translation: "Bir hata oluştu!"
      // In case of an error, revert the local state change
      setUserJetons((prevJetons) => prevJetons + VIP_COST[selectedVIP]);
    }
@@ -98,14 +104,14 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
             <View style={styles.headerButtons}>
               <Pressable
                 style={
-                  selectedVIP === "1 Aylık VIP"
+                  selectedVIP === t("one_month_vip_key")
                     ? styles.buttonMonthlySelected
                     : styles.buttonMonthly
                 }
-                onPress={() => setSelectedVIP("1 Aylık VIP")}
+                onPress={() => setSelectedVIP(t("one_month_vip_key"))}
               >
-                <Text style={styles.buttonText}>1 Aylık VIP</Text>
-                <Text style={styles.popularText}>En Popüler</Text>
+                <Text style={styles.buttonText}>{t("one_month_vip_key")}</Text>
+                <Text style={styles.popularText}>{t("most_popular_key")}</Text>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <SVGComponent
                     iconName="jeton"
@@ -115,16 +121,15 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
                   <Text style={styles.buttonText}>1050</Text>
                 </View>
               </Pressable>
-
               <Pressable
                 style={
-                  selectedVIP === "1 Yıllık VIP"
+                  selectedVIP === t("one_year_vip_key")
                     ? styles.buttonYearlySelected
                     : styles.buttonYearly
                 }
-                onPress={() => setSelectedVIP("1 Yıllık VIP")}
+                onPress={() => setSelectedVIP(t("one_year_vip_key"))}
               >
-                <Text style={styles.buttonText}>1 Yıllık VIP</Text>
+                <Text style={styles.buttonText}>{t("one_year_vip_key")}</Text>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <SVGComponent
                     iconName="jeton"
@@ -142,10 +147,7 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
                 customWidth="35"
                 customHeight="35"
               />
-              <Text style={styles.featureText}>
-                Elmas rozeti alarak profilini öne çıkart. Daha çok kişiden mesaj
-                al
-              </Text>
+              <Text style={styles.featureText}>{t("feature1_text_key")}</Text>
             </View>
             <View style={styles.featureCard}>
               <SVGComponent
@@ -153,10 +155,7 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
                 customWidth="35"
                 customHeight="35"
               />
-
-              <Text style={styles.featureText}>
-                Profiline kimlerin baktığını gör
-              </Text>
+              <Text style={styles.featureText}>{t("feature2_text_key")}</Text>
             </View>
             <View style={styles.featureCard}>
               <SVGComponent
@@ -164,8 +163,7 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
                 customWidth="35"
                 customHeight="35"
               />
-
-              <Text style={styles.featureText}>Partnerine fotoğraf gönder</Text>
+              <Text style={styles.featureText}>{t("feature3_text_key")}</Text>
             </View>
             <View style={styles.featureCard}>
               <SVGComponent
@@ -173,10 +171,7 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
                 customWidth="35"
                 customHeight="35"
               />
-
-              <Text style={styles.featureText}>
-                Filtreme yaparak yakınındaki insanlarla tanış
-              </Text>
+              <Text style={styles.featureText}>{t("feature4_text_key")}</Text>
             </View>
             <View style={styles.featureCard}>
               <SVGComponent
@@ -184,10 +179,7 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
                 customWidth="35"
                 customHeight="35"
               />
-
-              <Text style={styles.featureText}>
-               Mesaj limitine takılmadan sınırsız mesaj gönder.
-              </Text>
+              <Text style={styles.featureText}>{t("feature5_text_key")}</Text>
             </View>
             <View style={styles.featureCard}>
               <SVGComponent
@@ -195,19 +187,18 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
                 customWidth="35"
                 customHeight="35"
               />
-
-              <Text style={styles.featureText}>
-                3 kişiye ücretsiz kahve ısmarla
-              </Text>
+              <Text style={styles.featureText}>{t("feature6_text_key")}</Text>
             </View>
             <Pressable
               style={styles.buttonContinue}
               onPress={handleVIPPurchase}
             >
-              <Text style={styles.buttonText}>Seçimi Onayla VIP ol</Text>
+              <Text style={styles.buttonText}>
+                {t("confirm_vip_choice_key")}
+              </Text>
             </Pressable>
             <Pressable style={styles.buttonCancel} onPress={closeModal}>
-              <Text style={styles.buttonText}>Vazgeç</Text>
+              <Text style={styles.buttonText}>{t("cancel_key")}</Text>
             </Pressable>
           </View>
         </View>

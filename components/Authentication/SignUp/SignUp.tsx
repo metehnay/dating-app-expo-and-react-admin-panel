@@ -1,27 +1,46 @@
 import React, { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import styles from "./style";
-import { firebaseApp, db } from "../../../firebaseConfig";
-import CityPicker from "../../Hooks/CityPicker";
+import { firebaseApp } from "../../../firebaseConfig";
 import BirthdayPicker from "../../Hooks/BirthdayPicker";
 import LoadingScreen from "./../../UI/Loading/Loading";
 import { useTranslation } from "../../../TranslationContext";
+import SVGComponent from "../../SVGComponent";
+import { askForLocationPermission, handleImageUpload } from "./SignUpHelpers";
+import * as Notifications from "expo-notifications";
 
 export default function SignUp({ navigation }: any) {
-  // State variables for user details
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [selectedCity, setSelectedCity] = useState<string>("");
-  const [modalCityVisible, setModalCityVisible] = useState<boolean>(false);
+  const [selectedCity, setSelectedCity] = useState<any>(null);
+  const [selectedCode, setSelectedCode] = useState<any>(null);
   const [birthDate, setBirthDate] = useState<string>("");
   const [modalBirthdayVisible, setModalBirthdayVisible] =
     useState<boolean>(false);
   const [gender, setGender] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [step, setStep] = useState<number>(1); // 1 for first step, 2 for second step
+  const [step, setStep] = useState<number>(1);
   const i18n = useTranslation();
+  const { t } = useTranslation(); // Destructure the translation function from the useTranslation hook
+
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+
+  // Use of modular functions
+  const locationPermission = () =>
+    askForLocationPermission(setSelectedCity, t, setSelectedCode); // Corrected the order of parameters.
+  const uploadImage = () =>
+    handleImageUpload(setIsUploading, setSelectedImageUri, t, setImageUrl); // Corrected the order of parameters.
 
   /**
    * Function to handle the next step button press.
@@ -30,30 +49,31 @@ export default function SignUp({ navigation }: any) {
    */
   const onNextStepPress = () => {
     if (step === 1) {
-      if (!gender) {
-        alert(i18n.t("genderError"));
+      // Existing conditions for step 1
+      if (!gender || !fullName || !selectedCity || !birthDate) {
+        alert(i18n.t("emptyField"));
         return;
       }
-      if (!fullName || !selectedCity || !birthDate) {
-                alert(i18n.t("emptyField"));
-
+      setStep(2); // Move to step 2 if step 1 conditions are satisfied
+    } else if (step === 2) {
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email.trim() || !emailRegex.test(email)) {
+        alert(i18n.t("InvalidEmail")); // Please add an appropriate message in your i18n files.
         return;
       }
-      setStep(2);
-    } else {
-      // Check if any of the required fields are empty for step 2
-      if (!email || !password) {
-        alert(i18n.t("EmailPasswordEmpty"));
+      if (!password.trim() || password.length < 6) {
+        alert(i18n.t("InvalidPassword")); // Alert user if password is less than 6 characters
         return;
       }
-      onRegisterPress();
+      setStep(3); // Move to step 3 if step 2 conditions are satisfied
+    } else if (step === 3) {
+      if (!imageUrl) {
+        alert(i18n.t("imageError"));
+        return;
+      }
+      onRegisterPress(); // Initiate the registration process in step 3 after the image is uploaded
     }
-  };
-
-
-  const handleCitySelection = (city: string) => {
-    setSelectedCity(city);
-    setModalCityVisible(false);
   };
 
   const handleBirthdaySelection = (
@@ -85,9 +105,14 @@ export default function SignUp({ navigation }: any) {
       !password ||
       !selectedCity ||
       !birthDate ||
-      !gender
+      !gender ||
+      !imageUrl
     ) {
-        alert(i18n.t("emptyField"));
+      if (!imageUrl) {
+        alert(i18n.t("imageError")); // Alert user if image is not uploaded
+        return;
+      }
+      alert(i18n.t("emptyField"));
       return;
     }
 
@@ -98,13 +123,18 @@ export default function SignUp({ navigation }: any) {
       .createUserWithEmailAndPassword(email, password)
       .then((response: any) => {
         const uid = response.user.uid;
+        const registeredTime = new Date().toISOString(); // Get the current time in ISO string format
+
         const data = {
           id: uid,
           email,
           fullName,
           city: selectedCity,
+          regionCode: selectedCode,
           birthDate,
           gender,
+          imageUrl: imageUrl, // Include the imageUrl in user data
+          registeredTime: registeredTime, // Add the registered time to the user data
         };
         const usersRef = firebaseApp.firestore().collection("users");
         usersRef
@@ -130,7 +160,6 @@ export default function SignUp({ navigation }: any) {
       });
   };
 
-  // Render the SignUp component
   return (
     <View style={styles.container}>
       <LoadingScreen loading={loading} />
@@ -152,6 +181,7 @@ export default function SignUp({ navigation }: any) {
         {step === 1 && (
           <>
             {/* Step 1: Collecting user's full name, city, birth date, and gender */}
+
             <TextInput
               style={styles.input}
               placeholder={i18n.t("yourName")}
@@ -161,16 +191,16 @@ export default function SignUp({ navigation }: any) {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
             />
-            <TouchableOpacity
-              onPress={() => setModalCityVisible(true)}
-              style={styles.input}
-            >
-              <Text>{selectedCity || i18n.t("pickCountry")}</Text>
+            <TouchableOpacity onPress={locationPermission} style={styles.input}>
+              <Text>
+                {selectedCity ? selectedCity : i18n.t("askPermission")}
+              </Text>
             </TouchableOpacity>
-            <CityPicker
-              isVisible={modalCityVisible}
-              onClose={() => setModalCityVisible(false)}
-              onSelectCity={handleCitySelection}
+
+            <BirthdayPicker
+              isVisible={modalBirthdayVisible}
+              onClose={() => setModalBirthdayVisible(false)}
+              onSelectDate={handleBirthdaySelection}
             />
             <TouchableOpacity
               onPress={() => setModalBirthdayVisible(true)}
@@ -178,11 +208,6 @@ export default function SignUp({ navigation }: any) {
             >
               <Text>{birthDate || i18n.t("pickBirthday")}</Text>
             </TouchableOpacity>
-            <BirthdayPicker
-              isVisible={modalBirthdayVisible}
-              onClose={() => setModalBirthdayVisible(false)}
-              onSelectDate={handleBirthdaySelection}
-            />
             <View style={styles.genderContainer}>
               <TouchableOpacity
                 style={[
@@ -193,6 +218,7 @@ export default function SignUp({ navigation }: any) {
               >
                 <Text style={styles.genderText}>{i18n.t("pickMan")}</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={[
                   styles.genderButton,
@@ -203,6 +229,7 @@ export default function SignUp({ navigation }: any) {
                 <Text style={styles.genderText}>{i18n.t("pickWoman")}</Text>
               </TouchableOpacity>
             </View>
+
             <TouchableOpacity style={styles.button} onPress={onNextStepPress}>
               <Text style={styles.buttonTitle}>{i18n.t("continue")}</Text>
             </TouchableOpacity>
@@ -231,8 +258,66 @@ export default function SignUp({ navigation }: any) {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
             />
-            <TouchableOpacity style={styles.button} onPress={onRegisterPress}>
-              <Text style={styles.buttonTitle}>{i18n.t("createAccount")}</Text>
+            <TouchableOpacity style={styles.button} onPress={onNextStepPress}>
+              <Text style={styles.buttonTitle}>{i18n.t("confirmText")}</Text>
+            </TouchableOpacity>
+          </>
+        )}
+
+        {step === 3 && (
+          <>
+            <Text style={{ textAlign: "center", padding: 10 }}>
+              {i18n.t("welcomeMessage")}
+            </Text>
+            {!(imageUrl || selectedImageUri) ? (
+              <TouchableOpacity style={styles.input2} onPress={uploadImage}>
+                <SVGComponent
+                  iconName="photoupload"
+                  customWidth="55"
+                  customHeight="55"
+                />
+                <Text>{i18n.t("uploadImage")}</Text>
+              </TouchableOpacity>
+            ) : null}
+            {/* Image Preview */}
+            {selectedImageUri && (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginVertical: 8,
+                }}
+              >
+                <Image
+                  source={{
+                    uri: `${selectedImageUri}?timestamp=${Date.now()}`,
+                  }}
+                  style={styles.imagePreview}
+                />
+                <TouchableOpacity
+                  onPress={uploadImage}
+                  style={{
+                    backgroundColor: "#2cc1d7",
+                    padding: 10,
+                    borderRadius: 14,
+                  }}
+                >
+                  <Text style={{ color: "#fff" }}>{i18n.t("changeImage")}</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {/* Loading Indicator */}
+            {isUploading && <ActivityIndicator size="large" color="#0000ff" />}
+
+            <TouchableOpacity
+              style={[styles.button, isUploading && styles.disabledButton]}
+              onPress={onRegisterPress}
+              disabled={isUploading} // Disable button when isUploading is true
+            >
+              <Text style={styles.buttonTitle}>
+                {i18n.t("completeRegistration")}
+              </Text>
             </TouchableOpacity>
           </>
         )}

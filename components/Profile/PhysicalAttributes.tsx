@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
+import { useTranslation } from "../../TranslationContext";
 
 interface Props {
   isVisible: boolean;
@@ -51,6 +52,8 @@ const PhysicalAttributesModal: React.FC<Props> = ({
   setSelectedHairColor,
   handleSavePhysicalAttributes,
 }) => {
+    const { t } = useTranslation();
+
   const heightOptions = Array.from(
     { length: 71 },
     (_, i) => (i + 140) / 100 // Generate heights from 1.40m to 2.10m
@@ -60,8 +63,6 @@ const PhysicalAttributesModal: React.FC<Props> = ({
     (weight) => weight.toString()
   ); // Generate weights from 30 to 160
 
-  const eyeColorOptions = ["Mavi", "Kahverengi", "Yeşil", "Ela"];
-  const hairColorOptions = ["Siyah", "Kahverengi", "Sarı", "Diğer"];
 
   const [showHeightDropdown, setShowHeightDropdown] = useState(false);
   const [showWeightDropdown, setShowWeightDropdown] = useState(false);
@@ -76,15 +77,16 @@ const PhysicalAttributesModal: React.FC<Props> = ({
   };
 
   return (
+     
     <Modal visible={isVisible} animationType="slide" transparent={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Fiziksel Özelliklerim</Text>
+          <Text style={styles.modalTitle}>{t('MyPhysicalStats')}</Text>
 
           {/* Dynamic rendering of dropdowns */}
           {[
             {
-              label: "Boy (m)",
+              label: t("HeightM"),
               value: selectedHeight,
               toggle: setShowHeightDropdown,
               show: showHeightDropdown,
@@ -92,28 +94,12 @@ const PhysicalAttributesModal: React.FC<Props> = ({
               setter: setSelectedHeight,
             },
             {
-              label: "Kilo (kg)",
+              label: t("Weightkg"),
               value: selectedWeight,
               toggle: setShowWeightDropdown,
               show: showWeightDropdown,
               options: weightOptions,
               setter: setSelectedWeight,
-            },
-            {
-              label: "Göz Rengi",
-              value: selectedEyeColor,
-              toggle: setShowEyeColorDropdown,
-              show: showEyeColorDropdown,
-              options: eyeColorOptions,
-              setter: setSelectedEyeColor,
-            },
-            {
-              label: "Saç Rengi",
-              value: selectedHairColor,
-              toggle: setShowHairColorDropdown,
-              show: showHairColorDropdown,
-              options: hairColorOptions,
-              setter: setSelectedHairColor,
             },
           ].map((dropdown, index) => (
             <React.Fragment key={index}>
@@ -149,11 +135,11 @@ const PhysicalAttributesModal: React.FC<Props> = ({
 
           <View style={styles.buttonContainer}>
             <Button
-              title="Kaydet"
+              title={t("saveModal")}
               onPress={handleSavePhysicalAttributes}
               color="#c48cbc"
             />
-            <Button title="Kapat" onPress={onClose} color="gray" />
+            <Button title={t("closeModal")} onPress={onClose} color="gray" />
           </View>
         </View>
       </View>

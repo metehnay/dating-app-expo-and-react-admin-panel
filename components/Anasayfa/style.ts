@@ -21,7 +21,7 @@ export default StyleSheet.create({
     textAlign: "center",
   },
   age: {
-    backgroundColor: "#C48CBC",
+    backgroundColor: "#ff0080",
     color: "#ffffff",
     fontFamily: "PoppinsBold",
     fontSize: 13,
@@ -29,5 +29,5 @@ export default StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 14,
   },
- 
+  
 });

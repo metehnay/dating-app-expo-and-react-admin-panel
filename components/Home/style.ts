@@ -29,16 +29,41 @@ export default StyleSheet.create({
     height: 80,
   },
   pass: {
-    color: "#c48cbc",
+    color: "#2cc1d7",
     marginLeft: "auto",
-    fontFamily: "PoppinsBold",
+    fontFamily: "RobotoBold",
     fontSize: 13,
+  },
+  customGoogleButton: {
+    width: "100%",
+    backgroundColor: "#fff", // Google color
+    borderRadius: 50,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    marginVertical: 7,
+  },
+  buttonText: {
+    color: "#101010",
+    fontSize: 16,
+    width: "100%",
+
+    fontFamily: "RobotoBold",
+
+    textAlign: "center",
   },
 
   footerView: {
     flex: 1,
     alignItems: "center",
     marginTop: 20,
+  },
+  modalContainer: {
+     width: "100%",
+     backgroundColor: "#fff",
+     height: "100%",
   },
   footerText: {
     fontSize: 16,

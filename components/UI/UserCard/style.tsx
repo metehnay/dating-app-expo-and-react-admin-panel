@@ -26,7 +26,7 @@ export default StyleSheet.create({
     marginBottom: 8,
     alignItems: "center",
     justifyContent: "center",
-   width: "100%",
+    width: "100%",
   },
   nameAgeContainer: {
     flexDirection: "row",

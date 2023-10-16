@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1043146951050",
+    "project_id": "loveify-db",
+    "storage_bucket": "loveify-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043146951050:android:9c5bc300992335ae192073",
+        "android_client_info": {
+          "package_name": "com.aydometehan2.love"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043146951050-scdt3fh8ci1fid9kirutg0s83e3raepq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3YDhk89hSqe5HxSn-oG0CTWqlRQgNw0w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043146951050-scdt3fh8ci1fid9kirutg0s83e3raepq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

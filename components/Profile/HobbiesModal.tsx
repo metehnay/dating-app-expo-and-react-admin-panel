@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "./../../TranslationContext";
 import {
   Modal,
   View,
@@ -15,38 +16,6 @@ interface Props {
   onSelectHobbies: (selectedHobbies: string[]) => void;
 }
 
-const hobbies = [
-  "Kamp yapma", // Camping
-  "Sinema", // Watching movies
-  "Kitap okuma", // Reading books
-  "Yemek yapma", // Cooking
-  "Seyahat", // Traveling
-  "Müzik dinleme", // Listening to music
-  "Futbol", // Soccer/football
-  "Fotoğrafçılık", // Photography
-  "Dans", // Dancing
-  "Yoga", // Yoga
-  "Balık tutma", // Fishing
-  "Yüzme", // Swimming
-  "Dağcılık", // Mountain climbing
-  "Sörf", // Surfing
-  "Bisiklet sürme", // Biking/cycling
-  "Koşu", // Running
-  "Resim yapma", // Painting
-  "Seramik yapma", // Pottery
-  "Basketbol", // Basketball
-  "Voleybol", // Volleyball
-  "Tenis", // Tennis
-  "Tiyatro", // Theater/acting
-  "Müzik aleti çalma", // Playing a musical instrument
-  "Bahçıvanlık", // Gardening
-  "Dalış", // Diving
-  "Kayak", // Skiing
-  "Bilardo", // Billiards
-  "Satranç", // Chess
-  "Video oyunları", // Video games
-  "Serbest dalış", // Free diving
-];
 
 const HobbiesModal: React.FC<Props> = ({
   isVisible,
@@ -54,6 +23,40 @@ const HobbiesModal: React.FC<Props> = ({
   onSelectHobbies,
 }) => {
   const [selectedHobbies, setSelectedHobbies] = React.useState<string[]>([]);
+  const i18n = useTranslation();
+
+  const hobbiesKeys = [
+    "camping",
+    "watchingMovies",
+    "readingBooks",
+    "cooking",
+    "traveling",
+    "listeningToMusic",
+    "playingFootball",
+    "photography",
+    "dancing",
+    "doingYoga",
+    "fishing",
+    "swimming",
+    "mountainClimbing",
+    "surfing",
+    "biking",
+    "running",
+    "painting",
+    "pottery",
+    "playingBasketball",
+    "playingVolleyball",
+    "playingTennis",
+    "acting",
+    "playingInstrument",
+    "gardening",
+    "diving",
+    "skiing",
+    "playingBilliards",
+    "playingChess",
+    "playingVideoGames",
+    "freeDiving",
+  ];
 
 const toggleHobby = (hobby: string) => {
   if (selectedHobbies.includes(hobby)) {
@@ -61,7 +64,10 @@ const toggleHobby = (hobby: string) => {
   } else {
     // Check if 5 hobbies are already selected
     if (selectedHobbies.length === 5) {
-      Alert.alert("Bilgi", "En fazla 5 hobi seçebilirsiniz.");
+       Alert.alert(
+         i18n.t("maxHobbiesSelectionAlertTitle"),
+         i18n.t("maxHobbiesSelectionAlertMessage")
+       );
       return; // Prevent adding more hobbies
     }
     setSelectedHobbies((prev) => [...prev, hobby]);
@@ -82,13 +88,13 @@ const toggleHobby = (hobby: string) => {
     >
       <View style={styles.modalBackground}>
         <View style={styles.hobbyContainer}>
-          {hobbies.map((hobby, index) => (
+          {hobbiesKeys.map((hobbyKey, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => toggleHobby(hobby)}
+              onPress={() => toggleHobby(hobbyKey)}
               style={[
                 styles.hobbyButton,
-                selectedHobbies.includes(hobby)
+                selectedHobbies.includes(hobbyKey)
                   ? styles.selectedHobby
                   : styles.unselectedHobby,
               ]}
@@ -96,18 +102,18 @@ const toggleHobby = (hobby: string) => {
               <Text
                 style={[
                   styles.hobbyText,
-                  selectedHobbies.includes(hobby)
+                  selectedHobbies.includes(hobbyKey)
                     ? styles.selectedHobbyText
                     : styles.unselectedHobbyText,
                 ]}
               >
-                {hobby}
+                {i18n.t(hobbyKey)}
               </Text>
             </TouchableOpacity>
           ))}
         </View>
         <TouchableOpacity onPress={handleDone} style={styles.doneButton}>
-          <Text style={styles.doneText}>Onayla</Text>
+          <Text style={styles.doneText}>{i18n.t("confirm")}</Text>
         </TouchableOpacity>
       </View>
     </Modal>

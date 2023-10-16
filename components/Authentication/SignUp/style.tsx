@@ -4,6 +4,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    paddingVertical: 20,
   },
   title: {},
   logo: {
@@ -26,12 +27,32 @@ export default StyleSheet.create({
     paddingLeft: 16,
     padding: 10,
   },
+  input2: {
+    borderRadius: 14,
+    overflow: "hidden",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 16,
+    padding: 10,
+    paddingVertical: 50,
+  },
   genderContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 10,
     marginLeft: 30,
     marginRight: 30,
+  },
+  focusedInput: {
+    borderWidth: 4,
+    borderColor: "red",
   },
   genderButton: {
     flex: 1,
@@ -43,13 +64,24 @@ export default StyleSheet.create({
     marginHorizontal: 5,
   },
   selectedGender: {
-    backgroundColor: "#f1e9f5", // or any color to indicate selection
+    backgroundColor: "#2cc1d7", // or any color to indicate selection
+  },
+  disabledButton: {
+    backgroundColor: "#d3d3d3", // Greyed out color or whatever you prefer
   },
   genderText: {
     fontSize: 16,
   },
+  imagePreview: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    marginBottom: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   button: {
-    backgroundColor: "#c48cbc",
+    backgroundColor: "#2cc1d7",
     marginLeft: 30,
     marginRight: 30,
     marginTop: 20,
@@ -73,7 +105,7 @@ export default StyleSheet.create({
     color: "#2e2e2d",
   },
   footerLink: {
-    color: "#c48cbc",
+    color: "#2cc1d7",
     fontWeight: "bold",
     fontSize: 16,
   },

@@ -7,6 +7,6 @@ export const Button = ({ title, onPress, color = "#ed5481", textcolor = "#ffffff
     style={[styles.button, { backgroundColor: color }]}
     onPress={onPress}
   >
-    <Text style={{color: textcolor, fontSize: 18}}>{title}</Text>
+    <Text style={{color: textcolor, fontSize: 18, fontFamily: "RobotoBold"}}>{title}</Text>
   </TouchableOpacity>
 );

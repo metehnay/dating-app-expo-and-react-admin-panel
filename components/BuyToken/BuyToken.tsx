@@ -14,10 +14,11 @@ import SVGComponent from "../SVGComponent";
 import { styles } from "./style";
 import VIPModal from "./VIPModal";
 import ProductPressable from "./ProductPressable";
+import { useTranslation } from "../../TranslationContext";
 
 // Constants are defined explicitly for the component's configuration and functionality.
 const APIKeys = {
-  google: "goog_IFicDqoerhXfMZIzKwYuvafFCOq",
+  google: "goog_PVdjbAZwXexWWtSxjDDspHPFkVS",
 };
 
 const JETON_MAPPING = {
@@ -33,6 +34,7 @@ export default function BuyToken() {
   const [currentOffering, setCurrentOffering] =
     useState<PurchasesOffering | null>(null);
   const [userJetons, setUserJetons] = useState<number>(0);
+const i18n = useTranslation();
 
   // The useEffect hook is employed to initialize necessary configurations and perform initial data fetching.
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function BuyToken() {
               if (doc.exists) {
                 setUserJetons(doc.data()?.jetons || 0);
               } else {
-                Alert.alert("Error", "No such document!");
+                Alert.alert(i18n.t("error"), i18n.t("no_document_found"));
               }
             },
             (error) => {
@@ -81,7 +83,8 @@ export default function BuyToken() {
     try {
       const purchaseMade = await Purchases.purchasePackage(product);
       if (purchaseMade) {
-        Alert.alert("Başarılı", "Jeton hesabınıza eklendi! Uygulamayı kapatıp açabilirsiniz.");
+            Alert.alert(i18n.t("success"), i18n.t("jeton_added"));
+
 
         const jetonsToCredit =
           JETON_MAPPING[
@@ -102,9 +105,15 @@ export default function BuyToken() {
         }
       }
     } catch (error) {
-      Alert.alert("Error", "Ödeme tamamlanamadı!");
+      Alert.alert(i18n.t("error"), i18n.t("payment_failed"));
     }
   };
+
+  const BestOffer: React.FC = () => (
+    <View style={styles.bestOfferContainer}>
+      <Text style={styles.bestOfferText}>Best Price!</Text>
+    </View>
+  );
 
   // If there's no current offerings data, a loading message is displayed to the user.
   if (!currentOffering) {
@@ -125,22 +134,23 @@ export default function BuyToken() {
       <View style={styles.balance}>
         <SVGComponent iconName="vipuser" customWidth="70" customHeight="70" />
         <Text style={styles.balancetext}>
-          Hemen VIP üye olarak eşsiz özellikler kazan.
+          {i18n.t("become_vip_and_gain_features")}
         </Text>
         <Pressable
           style={styles.buttonVIP}
           onPress={() => setModalVisible(true)}
         >
-          <Text style={{color: "#fff"}}>İncele</Text>
+          <Text style={{ color: "#fff" }}>{i18n.t("examine")}</Text>
         </Pressable>
       </View>
-      {currentOffering.availablePackages.map((pkg) => (
-        <ProductPressable
-          key={pkg.product.identifier}
-          pkg={pkg}
-          purchaseProduct={purchaseProduct}
-        />
-      ))}
+      <View style={styles.flexBox}>
+        {currentOffering.availablePackages.map((pkg, index) => (
+          <View key={pkg.product.identifier} style={{ position: "relative" }}>
+            {index === 1 && <BestOffer />}
+            <ProductPressable pkg={pkg} purchaseProduct={purchaseProduct} />
+          </View>
+        ))}
+      </View>
     </View>
   );
 }

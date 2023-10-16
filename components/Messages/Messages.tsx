@@ -10,7 +10,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import { firebaseApp } from "../../firebaseConfig";
+import { firebaseApp, functions } from "../../firebaseConfig";
 import { serverTimestamp } from "@firebase/firestore";
 import SVGComponent from "../SVGComponent";
 import firebase from "firebase/compat/app";
@@ -22,6 +22,8 @@ import ImageModal from "./ImageModal";
 import InputBoxComponent from "./InputBoxComponent";
 import ReusableModal from "./../VIPModal/VIPModal";
 import * as Notifications from "expo-notifications";
+import { useTranslation } from './../../TranslationContext';
+import { useNavigation } from "@react-navigation/native";
 
 interface Message {
   text?: string;
@@ -41,6 +43,7 @@ type FlatListItem = Message | SendingImage;
 
 const MessageScreen = ({ route }: any) => {
   const { user } = route.params;
+  const navigation = useNavigation<any>();
 
   // State Declarations
   const [messages, setMessages] = useState<Message[]>([]);
@@ -53,6 +56,7 @@ const MessageScreen = ({ route }: any) => {
   const [sendingImages, setSendingImages] = useState<string[]>([]);
   const [messageCount, setMessageCount] = useState<number>(0);
   const [isLimitModalVisible, setLimitModalVisible] = useState(false);
+  const i18n = useTranslation();
 
   const toggleImageModal = (uri?: string) => {
     setModalImage(uri || null);
@@ -67,6 +71,22 @@ const MessageScreen = ({ route }: any) => {
       timeZone: "Europe/Istanbul",
     }).format(date);
   };
+
+  useEffect(() => {
+    // This listener is fired whenever a notification is interacted with (received or clicked)
+    const responseListener =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        const { action } = response.notification.request.content.data;
+
+        if (action === "go_to_home") {
+          navigation.navigate("Anasayfa");
+        }
+      });
+
+    return () => {
+      responseListener.remove(); // Unsubscribe on unmount
+    };
+  }, []);
 
   useEffect(() => {
     let authUnsubscribe: (() => void) | undefined;
@@ -112,22 +132,22 @@ const MessageScreen = ({ route }: any) => {
           });
 
           // Get Expo push token without checking permissions
-          try {
-            const tokenData = await Notifications.getExpoPushTokenAsync();
-            const expoPushToken = tokenData.data; // this is your token
+           // Get Expo push token without checking permissions
+      try {
+        const tokenData = await Notifications.getExpoPushTokenAsync();
+        const expoPushToken = tokenData.data; // this is your token
 
-            // Store this token in your Firebase user document
-            if (authUser.uid && expoPushToken) {
-              firebaseApp
-                .firestore()
-                .collection("users")
-                .doc(authUser.uid)
-                .update({
-                  expoPushToken: expoPushToken,
-                });
-            }
-          } catch (error) {}
+        // Store this token in your Firebase user document
+        if (authUser.uid && expoPushToken) {
+          firebaseApp.firestore().collection("users").doc(authUser.uid).update({
+            expoPushToken: expoPushToken,
+          });
         }
+      } catch (error) {
+       // Add this line to track the error
+      }
+    }
+        
       });
 
     // Cleanup on component unmount or when the dependencies change
@@ -242,6 +262,10 @@ const MessageScreen = ({ route }: any) => {
       };
 
       await firebaseApp.firestore().collection("messages").add(message);
+
+      // Send push notification
+      sendPushNotification(user.id, text); // <-- Added this line
+
       if (!currentUserId) {
         return;
       }
@@ -272,12 +296,21 @@ const MessageScreen = ({ route }: any) => {
         );
 
         // Notify the user about the failure (you can modify this to fit your design)
-        alert("Bir hata oluştu tekrar deneyin");
+        i18n.t("error");
       }
 
       setIsSending(false);
     }
   };
+
+ const sendPushNotification = async (receiverId: string, message: string) => {
+   const sendNotification = functions.httpsCallable("sendNotification");
+
+   sendNotification({ receiverId, message })
+     .then((result) => {})
+     .catch((error) => {});
+ };
+
 
   const flatListRef = useRef<FlatList<FlatListItem>>(null);
   flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
@@ -367,8 +400,8 @@ const MessageScreen = ({ route }: any) => {
           setLimitModalVisible(false);
         }}
         iconName="vip1" // replace with your actual icon name
-        message="Günlük sınıra ulaştınız sınırsız mesajlaşmak ve birçok özellikten faydalanmak için VIP olun."
-        buttonText="Kapat" // replace with your desired button text
+        message={i18n.t("dailyLimitGetVip")}
+        buttonText={i18n.t("closeText")} // replace with your desired button text
       />
     </View>
   );

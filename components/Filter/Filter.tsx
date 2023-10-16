@@ -179,7 +179,7 @@ const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             style={styles.showFiltersButton}
             onPress={applyFilters}
           >
-            <Text style={{color: "#ffffff"}}>Seçimleri Uygula</Text>
+            <Text style={{ color: "#ffffff" }}>Seçimleri Uygula</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -190,7 +190,7 @@ const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           style={styles.showFiltersButton}
           onPress={() => setIsFilterVisible(true)}
         >
-          <Text style={{color: "#ffffff"}}>Filtrelemeyi Aç</Text>
+          <Text style={{ color: "#ffffff" }}>Filtrelemeyi Aç</Text>
         </TouchableOpacity>
       )}
     </View>
