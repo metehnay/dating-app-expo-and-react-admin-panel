@@ -148,11 +148,12 @@ const fr = {
   homePage: "Accueil",
   getVipMessage: "Achetez VIP pour trouver des personnes près de chez vous.",
   okConfirm: "OK",
+  locationPermissionTitle: "Trouver des Personnes à Proximité",
 
   //MESSAGES
-  dailyLimitGetVip: "Vous avez atteint la limite quotidienne, passez à PRO.",
+  dailyLimitGetVip: "Vous avez atteint la limite quotidienne, passez à VIP.",
   closeText: "Fermer",
-  getVipOpenFeatures: "Passez à PRO pour débloquer toutes les fonctionnalités.",
+  getVipOpenFeatures: "Passez à VIP pour débloquer toutes les fonctionnalités.",
   NoMessageYet: "Pas encore de messages.",
   WriteMessage: "Écrire un message...",
 

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    justifyContent: "flex-start", // add this
     paddingHorizontal: 20,
   },
   logo: {
@@ -34,25 +34,64 @@ export default StyleSheet.create({
     fontFamily: "RobotoBold",
     fontSize: 13,
   },
-  customGoogleButton: {
-    width: "100%",
-    backgroundColor: "#fff", // Google color
-    borderRadius: 50,
-    justifyContent: "space-between",
-    alignItems: "center",
+  googleButton: {
     flexDirection: "row",
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    marginVertical: 7,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: "#2cc1d7",
+  },
+  emailButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: "#d4d2d2",
+  },
+  iconStyle: {
+    position: "absolute",
+    left: 20,
+  },
+  iconContainer: {
+    position: "absolute",
+    left: 20,
+  },
+  customGoogleButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 20,
+    paddingHorizontal: 40, // increase the horizontal padding to make room for the icon
+    marginBottom: 10,
+    marginTop: 20,
+    backgroundColor: "#2cc1d7",
+    position: "relative",
+    borderRadius: 12,
+  },
+  customEmailButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12,
+    paddingVertical: 20,
+    paddingHorizontal: 40, // increase the horizontal padding to make room for the icon
+    marginBottom: 10,
+    backgroundColor: "#101626",
+    position: "relative",
   },
   buttonText: {
-    color: "#101010",
-    fontSize: 16,
-    width: "100%",
+    color: "#fff",
+  },
 
-    fontFamily: "RobotoBold",
-
-    textAlign: "center",
+  loginLinkContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  loginLink: {
+    color: "#2cc1d7",
   },
 
   footerView: {
@@ -61,9 +100,9 @@ export default StyleSheet.create({
     marginTop: 20,
   },
   modalContainer: {
-     width: "100%",
-     backgroundColor: "#fff",
-     height: "100%",
+    width: "100%",
+    backgroundColor: "#fff",
+    height: "100%",
   },
   footerText: {
     fontSize: 16,

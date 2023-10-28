@@ -33,6 +33,7 @@ const hi = {
   maxHobbiesSelectionAlertTitle: "सूचना",
   maxHobbiesSelectionAlertMessage: "आप ५ हॉबियाँ चुन सकते हैं।",
   confirm: "पुष्टि करें",
+  locationPermissionTitle: "नजदीकी लोग ढूंढ़ें",
 
   //USER PROFILE
   sendCoffee: "कॉफ़ी भेजें",

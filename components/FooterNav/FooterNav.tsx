@@ -58,13 +58,15 @@ const handleNavigation = (route: string) => {
   setActiveRoute(route);
 };
   const navItems = [
-    { route: "Anasayfa", icon: "mood", displayName: "Match" },
+    { route: "Homepage", icon: "mood", displayName: "Match" },
     {
-      route: "FilterScreen",
-      icon: "search",
+      route: "NotificationScreen",
+      icon: "notify",
+      displayName: "Notification",
     },
+
     {
-      route: "JetonScreen",
+      route: "PremiumScreen",
       icon: "shop",
       customSize: 45,
     },

@@ -54,7 +54,6 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fb0100",
     borderRadius: 50,
     padding: 10,
-    marginTop: 20,
   },
 
   rowLiked: {

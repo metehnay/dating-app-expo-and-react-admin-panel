@@ -10,7 +10,14 @@ import LoadingScreen from "../UI/Loading/Loading";
 import { CustomModal } from "./../UI/Modal/Modal";
 import { useTranslation } from "./../../TranslationContext";
 import "firebase/compat/auth";
+import LottieView from "lottie-react-native";
 import SVGComponent from "../SVGComponent";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithCredential,
+} from "firebase/auth";
 
 
 export const Home = ({ navigation }: any) => {
@@ -21,7 +28,49 @@ export const Home = ({ navigation }: any) => {
   const i18n = useTranslation();
   const [loginPressed, setLoginPressed] = useState(false);
 
-  
+const signInWithGoogle = async () => {
+  try {
+    // Start the loading animation
+    setLoading(true);
+
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+
+    // Firebase authentication
+    const googleCredential = GoogleAuthProvider.credential(userInfo.idToken);
+    const firebaseAuth = getAuth(firebaseApp);
+    const result = await signInWithCredential(firebaseAuth, googleCredential);
+
+    // Check Firestore if user's email already exists
+    const db = firebaseApp.firestore();
+    const usersRef = db.collection("users");
+    const userSnapshot = await usersRef
+      .where("email", "==", userInfo.user.email)
+      .get();
+
+    if (userSnapshot.empty) {
+      // Store the user's email (or any other required info) in Firestore
+      await usersRef.add({
+        email: userInfo.user.email,
+        // ...any other data you want to store
+      });
+      // Stop the loading animation before navigating
+      setLoading(false);
+      navigation.navigate("Sign Up", {
+        userData: userInfo.user,
+        googleSignIn: true,
+      });
+    } else {
+      // Stop the loading animation before navigating
+      setLoading(false);
+      navigation.navigate("Homepage");
+    }
+  } catch (error) {
+    // Stop the loading animation in case of error
+    setLoading(false);
+    alert(i18n.t("invalid"));
+  }
+};
 
   const sendPasswordReset = async (modalEmail: string) => {
     if (modalEmail === "") {
@@ -45,7 +94,7 @@ export const Home = ({ navigation }: any) => {
     setLoading(true);
     try {
       await firebaseApp.auth().signInWithEmailAndPassword(email, password);
-      navigation.navigate("Anasayfa");
+      navigation.navigate("Homepage");
     } catch (error) {
       alert(i18n.t("invalid"));
     } finally {
@@ -133,23 +182,37 @@ export const Home = ({ navigation }: any) => {
         </Text>{" "}
         şartlarını kabul etmiş olursunuz{" "}
       </Text>
-      <Button
-        title={i18n.t("signUp")}
+      <Pressable style={styles.customGoogleButton} onPress={signInWithGoogle}>
+        <View style={styles.iconContainer}>
+          <SVGComponent iconName="google" customWidth="35" customHeight="35" />
+        </View>
+        <Text style={styles.buttonText}>Google ile devam et</Text>
+      </Pressable>
+
+      <Pressable
+        style={styles.customEmailButton}
         onPress={() => navigation.navigate("Sign Up")}
-        color="#2cc1d7"
-        textcolor="#fff"
-      />
-      <Button
-        title={i18n.t("login")}
-        onPress={() => setLoginPressed(true)}
-        textcolor="#101010"
-        color="#d4d2d2"
-      />
+      >
+        <View style={styles.iconContainer}>
+          <SVGComponent iconName="mail" customWidth="35" customHeight="35" />
+        </View>
+        <Text style={styles.buttonText}>E-posta ile devam et</Text>
+      </Pressable>
+
+      <View style={styles.loginLinkContainer}>
+        <Text>Zaten hesabın var mı? </Text>
+        <Pressable onPress={() => setLoginPressed(true)}>
+          <Text style={styles.loginLink}>GİRİŞ YAP</Text>
+        </Pressable>
+      </View>
     </View>
   );
 
+
   return (
     <View style={styles.container}>
+    
+   
       <LoadingScreen loading={loading} />
       <KeyboardAwareScrollView
         style={{ flex: 1, width: "100%" }}

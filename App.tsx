@@ -10,7 +10,7 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import SignUp from "./components/Authentication/SignUp/SignUp";
 import { Home } from "./components/Home/Home";
-import Anasayfa from "./components/Anasayfa/Anasayfa";
+import Homepage from "./components/Homepage/Homepage";
 import Profile from "./components/Profile/Profile";
 import FooterNav from "./components/FooterNav/FooterNav";
 import MessageScreen from "./components/Messages/Messages";
@@ -29,6 +29,8 @@ import FilterScreen from './components/Filter/Filter';
 import NotificationScreen from "./components/Notification/Notification";
 import { TranslationProvider } from "./TranslationContext";
 import UserMatches from './components/UserMatches/UserMatches';
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import Premium from "./components/Premium/Premium";
 
 const Theme = {
   ...DefaultTheme,
@@ -60,12 +62,20 @@ type MessageScreenRouteParams = {
 const Stack = createNativeStackNavigator();
 
 function App() {
+  
   enableScreens();
    const navigationRef = useRef(null);
    const [unreadMessages, setUnreadMessages] = useState(false);
 
    const [user, setUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        "1043146951050-scdt3fh8ci1fid9kirutg0s83e3raepq.apps.googleusercontent.com", // this is required for Android
+      offlineAccess: true, // this is for requesting server auth code.
+    });
+  }, []);
    const [isAuth, setIsAuth] = useState(false);
    const [initialized, setInitialized] = useState(false); // State to check if the app has completed its initial data retrieval
    const [authListenerCompleted, setAuthListenerCompleted] = useState(false);
@@ -123,6 +133,7 @@ function App() {
       const shouldShowFooter =
         activeRoute.name !== "Home" &&
         activeRoute.name !== "Login" &&
+        activeRoute.name !== "PremiumScreen" &&
         activeRoute.name !== "MessageScreen" &&
         activeRoute.name !== "Sign Up";
 
@@ -160,7 +171,7 @@ function App() {
         >
           <StatusBar style="light" />
           <Stack.Navigator
-            initialRouteName={isAuth ? "Anasayfa" : "Home"}
+            initialRouteName={isAuth ? "Homepage" : "Home"}
             screenOptions={{
               headerShown: true, // Show header for all screens
               headerBackTitleVisible: false,
@@ -204,9 +215,9 @@ function App() {
               }}
             />
             <Stack.Screen
-              name="Anasayfa"
+              name="Homepage"
               children={(props) => (
-                <Anasayfa {...props} initialized={initialized} />
+                <Homepage {...props} initialized={initialized} />
               )}
               options={({ navigation }) => ({
                 headerTitle: "LOVEIFY",
@@ -243,6 +254,13 @@ function App() {
               component={BuyToken}
               options={{
                 headerTitle: "Jeton Al",
+              }}
+            />
+            <Stack.Screen
+              name="PremiumScreen"
+              component={Premium}
+              options={{
+                headerShown: false,
               }}
             />
             <Stack.Screen

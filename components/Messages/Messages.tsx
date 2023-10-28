@@ -79,7 +79,7 @@ const MessageScreen = ({ route }: any) => {
         const { action } = response.notification.request.content.data;
 
         if (action === "go_to_home") {
-          navigation.navigate("Anasayfa");
+          navigation.navigate("Homepage");
         }
       });
 

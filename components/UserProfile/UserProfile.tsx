@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,104 +12,74 @@ import {
 import { styles } from "./style";
 import SVGComponent from "../SVGComponent";
 import { firebaseApp, db } from "../../firebaseConfig";
-import ReusableModal from './../VIPModal/VIPModal';
+import ReusableModal from "./../VIPModal/VIPModal";
 import { useTranslation } from "../../TranslationContext";
 
 const screenWidth = Dimensions.get("window").width;
 
-type GiftType = "coffee" | "star";
-
-interface GiftDetail {
-  collection: string;
-  type: string;
-  sentName: string;
-  alertMsg: string;
-  alreadySentMsg: string;
-}
-
-
 const UserProfile = ({ route, navigation }: any) => {
   const i18n = useTranslation();
 
-  const GIFT_DETAILS: Record<GiftType, GiftDetail> = {
-    coffee: {
-      collection: "userCoffees",
-      type: "coffee",
-      sentName: "sentCoffees",
-      alertMsg: i18n.t("coffeeSend"),
-      alreadySentMsg: i18n.t("alreadySendCoffee"),
-    },
-    star: {
-      collection: "userStars",
-      type: "star",
-      sentName: "sentStars",
-      alertMsg: i18n.t("starSend"),
-      alreadySentMsg: i18n.t("alreadySendStar"),
-    },
-  };
-
   const JETON_COST = 100;
-
-
   const user = route.params.user;
+
   const [likes, setLikes] = React.useState<number>(0);
   const [hasLiked, setHasLiked] = React.useState<boolean>(false);
   const [jetons, setJetons] = React.useState<number | null>(null);
-  const [hasSentCoffee, setHasSentCoffee] = React.useState(false);
-  const [hasStarred, setHasStarred] = React.useState(false);
-const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
-const [modalMessage, setModalMessage] = React.useState<string>("");
-const fetchJetonsAndLikes = useCallback(async () => {
-  try {
-    const loggedInUserId = firebaseApp.auth().currentUser?.uid;
-    if (!loggedInUserId) {
-      return;
+  const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
+  const [modalMessage, setModalMessage] = React.useState<string>("");
+
+  const fetchJetonsAndLikes = useCallback(async () => {
+    try {
+      const loggedInUserId = firebaseApp.auth().currentUser?.uid;
+      if (!loggedInUserId) {
+        return;
+      }
+
+      // Use a single document reference for loggedInUserId
+      const userRef = db.collection("users").doc(loggedInUserId);
+
+      const doc = await userRef.get();
+
+      if (doc.exists) {
+        const userData = doc.data();
+        setJetons(userData?.jetons || 0);
+      }
+    } catch (error) {
+      alert(i18n.t("error"));
     }
 
-    // Use a single document reference for loggedInUserId
-    const userRef = db.collection("users").doc(loggedInUserId);
+    try {
+      const loggedInUserId = firebaseApp.auth().currentUser?.uid;
+      if (!loggedInUserId) {
+        return;
+      }
 
-    const doc = await userRef.get();
+      // Use a single document reference for userLikes
+      const userLikesRef = db.collection("userLikes").doc(user.id);
 
-    if (doc.exists) {
-      const userData = doc.data();
-      setJetons(userData?.jetons || 0);
-    }
-  } catch (error) {
-    alert(i18n.t("error"));
-  }
+      const likeDoc = await userLikesRef.get();
 
-  try {
-    const loggedInUserId = firebaseApp.auth().currentUser?.uid;
-    if (!loggedInUserId) {
-      return;
-    }
-
-    // Use a single document reference for userLikes
-    const userLikesRef = db.collection("userLikes").doc(user.id);
-
-    const likeDoc = await userLikesRef.get();
-
-    if (likeDoc.exists) {
-      const likeData = likeDoc.data();
-      if (likeData) {
-        setLikes(likeData.likes || 0);
-        if (
-          likeData.likedUsers &&
-          likeData.likedUsers.includes(loggedInUserId)
-        ) {
-          setHasLiked(true);
+      if (likeDoc.exists) {
+        const likeData = likeDoc.data();
+        if (likeData) {
+          setLikes(likeData.likes || 0);
+          if (
+            likeData.likedUsers &&
+            likeData.likedUsers.includes(loggedInUserId)
+          ) {
+            setHasLiked(true);
+          }
         }
       }
+    } catch (error) {
+      alert("Bir hata oluştu");
     }
-  } catch (error) {
-    alert("Bir hata oluştu")
-  }
-}, [user.id]);
+  }, [user.id]);
 
-    useEffect(() => {
+  useEffect(() => {
     fetchJetonsAndLikes();
-  }, [fetchJetonsAndLikes]); 
+  }, [fetchJetonsAndLikes]);
 
  const handleLikePress = async () => {
    const loggedInUserId = firebaseApp.auth().currentUser?.uid;
@@ -120,6 +90,14 @@ const fetchJetonsAndLikes = useCallback(async () => {
    const userLikesRef = db.collection("userLikes").doc(user.id);
    const likeDoc = await userLikesRef.get();
 
+   // Check if the user has enough jetons
+ if (!jetons || jetons < JETON_COST) {
+   setModalMessage(i18n.t("notEnoughJeton"));
+   setModalVisible(true);
+   return;
+ }
+
+
    try {
      if (likeDoc.exists) {
        const likeData = likeDoc.data();
@@ -128,7 +106,6 @@ const fetchJetonsAndLikes = useCallback(async () => {
            likeData.likedUsers &&
            likeData.likedUsers.includes(loggedInUserId)
          ) {
-           // The user has already liked, so just show the alert as before
            alert(i18n.t("alreadyLikedThisUser"));
          } else {
            const newLikeCount = likeData.likes + 1;
@@ -136,6 +113,15 @@ const fetchJetonsAndLikes = useCallback(async () => {
              likes: newLikeCount,
              likedUsers: [...likeData.likedUsers, loggedInUserId],
            });
+
+           // Deduct the jetons from the user's account
+           const userRef = db.collection("users").doc(loggedInUserId);
+          const updatedJetons = jetons ? jetons - JETON_COST : 0;
+          await userRef.update({
+            jetons: updatedJetons,
+          });
+
+           setJetons((prevJetons) => prevJetons && prevJetons - JETON_COST);
 
            // Add a notification to the notifications collection
            await db.collection("notifications").add({
@@ -148,7 +134,7 @@ const fetchJetonsAndLikes = useCallback(async () => {
            setLikes(newLikeCount);
            setHasLiked(true);
 
-           // Here we replace the alert with setting the modal to visible
+           // Displaying a modal indicating the like was sent
            setModalMessage(i18n.t("likeSent"));
            setModalVisible(true);
          }
@@ -158,6 +144,14 @@ const fetchJetonsAndLikes = useCallback(async () => {
          likes: 1,
          likedUsers: [loggedInUserId],
        });
+
+       // Deduct the jetons from the user's account
+       const userRef = db.collection("users").doc(loggedInUserId);
+       await userRef.update({
+         jetons: jetons - JETON_COST,
+       });
+
+       setJetons((prevJetons) => prevJetons && prevJetons - JETON_COST);
 
        // Add a notification to the notifications collection
        await db.collection("notifications").add({
@@ -170,86 +164,13 @@ const fetchJetonsAndLikes = useCallback(async () => {
        setLikes(1);
        setHasLiked(true);
 
-       // Here again, we replace the alert with setting the modal to visible
+       // Displaying a modal indicating the like was sent
        setModalVisible(true);
      }
    } catch (error) {
-        alert(i18n.t("error"));
+     alert(i18n.t("error"));
    }
  };
-
-
-  const sendGift = useCallback(
-    async (giftType: GiftType) => {
-      const loggedInUserId = firebaseApp.auth()?.currentUser?.uid;
-      if (!loggedInUserId) return;
-
-      const { collection, type, sentName, alertMsg, alreadySentMsg } =
-        GIFT_DETAILS[giftType];
-
-      if (!jetons || jetons < JETON_COST) {
-        setModalMessage(i18n.t("notEnoughJeton"));
-        setModalVisible(true);
-        return;
-      }
-
-      const userGiftRef = db.collection(collection).doc(user.id);
-      const giftDoc = await userGiftRef.get();
-      const sentGifts = giftDoc.data()?.[sentName] || [];
-
-      if (sentGifts.includes(loggedInUserId)) {
-        alert(alreadySentMsg);
-        return;
-      }
-
-      const isConfirmed = await new Promise((resolve) => {
-        Alert.alert(
-          i18n.t("info"),
-          i18n.t("confirmJetonsDeduct", { jetonCost: JETON_COST }),
-          [
-            {
-              text: "Evet",
-              onPress: () => resolve(true),
-            },
-            {
-              text: "Vazgeç",
-              onPress: () => resolve(false),
-              style: "cancel",
-            },
-          ]
-        );
-      });
-
-      if (!isConfirmed) return;
-
-      await userGiftRef.set(
-        { [sentName]: [...sentGifts, loggedInUserId] },
-        { merge: true }
-      );
-
-      // Deduct jetons and update local state
-      await db
-        .collection("users")
-        .doc(loggedInUserId)
-        .update({ jetons: jetons - JETON_COST });
-      setJetons((prev) => (prev ? prev - JETON_COST : null));
-
-      // Add a notification for the gift
-      await db.collection("notifications").add({
-        userId: user.id,
-        fromUserId: loggedInUserId,
-        type: type,
-        createdAt: new Date(),
-      });
-
-      giftType === "coffee" ? setHasSentCoffee(true) : setHasStarred(true);
-      alert(alertMsg);
-    },
-    [jetons]
-  );
-
-  const handleCoffeeSend = useCallback(() => sendGift("coffee"), [sendGift]);
-  const handleStarLike = useCallback(() => sendGift("star"), [sendGift]);
 
   return (
     <ScrollView>
@@ -269,13 +190,6 @@ const fetchJetonsAndLikes = useCallback(async () => {
       />
 
       <View style={styles.row1}>
-        <Pressable style={styles.row} onPress={handleCoffeeSend}>
-          <View style={styles.iconkahve}>
-            <SVGComponent iconName="coffee" />
-          </View>
-          <Text style={styles.rowTex}>{i18n.t("sendCoffee")}</Text>
-        </Pressable>
-
         <Pressable
           style={hasLiked ? styles.rowLiked : styles.rowheart}
           onPress={handleLikePress}
@@ -284,13 +198,6 @@ const fetchJetonsAndLikes = useCallback(async () => {
             <SVGComponent iconName="love" />
           </View>
           <Text style={styles.rowTex}>{i18n.t("sendLike")}</Text>
-        </Pressable>
-
-        <Pressable style={styles.row} onPress={handleStarLike}>
-          <View style={styles.iconfavori}>
-            <SVGComponent iconName="favorite" />
-          </View>
-          <Text style={styles.rowTex}>{i18n.t("sendStar")}</Text>
         </Pressable>
 
         <Pressable
@@ -339,11 +246,13 @@ const fetchJetonsAndLikes = useCallback(async () => {
   );
 };
 
-const UserProperty = React.memo(({ label, value }: { label: string; value?: string }) => (
-  <View style={styles.between}>
-    <Text>{label}</Text>
-    <Text>{value || "-----"}</Text>
-  </View>
-));
+const UserProperty = React.memo(
+  ({ label, value }: { label: string; value?: string }) => (
+    <View style={styles.between}>
+      <Text>{label}</Text>
+      <Text>{value || "-----"}</Text>
+    </View>
+  )
+);
 
 export default UserProfile;

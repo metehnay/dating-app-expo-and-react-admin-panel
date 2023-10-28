@@ -22,10 +22,10 @@ const APIKeys = {
 };
 
 const JETON_MAPPING = {
-  "500jeton": 500,
-  "1500jeton": 1500,
-  "3000jeton": 3000,
-  "5000jeton": 5000,
+  "100_mesaj": 100,
+  "200_mesaj": 200,
+  "1000_mesaj": 1000,
+  "1500_mesaj": 5000,
 };
 
 export default function BuyToken() {

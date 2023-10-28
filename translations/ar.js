@@ -33,6 +33,7 @@ const ar = {
   maxHobbiesSelectionAlertTitle: "معلومات",
   maxHobbiesSelectionAlertMessage: "يمكنك اختيار ما يصل إلى 5 هوايات.",
   confirm: "تأكيد",
+  locationPermissionTitle: "البحث عن أشخاص قريبين",
 
   //USER PROFILE
   sendCoffee: "أرسل قهوة",

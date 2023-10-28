@@ -18,6 +18,7 @@ import BirthdayPicker from "../Hooks/BirthdayPicker";
 import HobbiesModal from "./HobbiesModal";
 import PhysicalAttributesModal from "./PhysicalAttributes";
 import { useTranslation } from "../../TranslationContext";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const Profile = ({ navigation }: any) => {
   const [user, setUser] = useState<any>({});
@@ -89,16 +90,21 @@ const Profile = ({ navigation }: any) => {
       xhr.send(null);
     });
   };
+const handleLogout = async () => {
+  try {
+    // Sign out from Google
+    await GoogleSignin.signOut();
 
-  const handleLogout = async () => {
-    try {
-      await firebaseApp.auth().signOut();
-      navigation.navigate("Home");
-    } catch (error) {
-      alert(i18n.t("error"));
-    }
-  };
+    // Sign out from Firebase
+    await firebaseApp.auth().signOut();
 
+    navigation.navigate("Home");
+  } catch (error) {
+    console.error("Logout Error:", error); // Log the actual error for better debugging
+
+    alert(i18n.t("error"));
+  }
+};
   const pickImage = async () => {
     if (Platform.OS !== "web") {
       const { status } =

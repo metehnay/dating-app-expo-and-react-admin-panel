@@ -144,6 +144,8 @@ const de = {
   buyJeton: "Markt",
   myMessages: "Meine Nachrichten",
   profileScreen: "Mein Profil",
+  locationPermissionTitle: "Finde Personen in der Nähe",
+
   filterScreen: "Suchen",
   homePage: "Startseite",
   getVipMessage: "Kaufen Sie VIP, um Personen in Ihrer Nähe zu finden.",
@@ -151,9 +153,9 @@ const de = {
 
   //MESSAGES
   dailyLimitGetVip:
-    "Sie haben das tägliche Limit erreicht, wechseln Sie zu PRO.",
+    "Sie haben das tägliche Limit erreicht, wechseln Sie zu VIP.",
   closeText: "Schließen",
-  getVipOpenFeatures: "Wechseln Sie zu PRO, um alle Funktionen freizuschalten.",
+  getVipOpenFeatures: "Wechseln Sie zu VIP, um alle Funktionen freizuschalten.",
   NoMessageYet: "Noch keine Nachrichten.",
   WriteMessage: "Eine Nachricht schreiben...",
 

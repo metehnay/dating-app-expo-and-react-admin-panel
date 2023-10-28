@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { View, FlatList } from "react-native";
 import { firebaseApp } from "../../firebaseConfig";
-import LoadingScreen from "./../UI/Loading/Loading";
-import UserCard from "./../UI/UserCard/UserCard";
+import LoadingScreen from "../UI/Loading/Loading";
+import UserCard from "../UI/UserCard/UserCard";
 
-const Anasayfa = ({ navigation, initialized }: any) => {
+const Homepage = ({ navigation, initialized }: any) => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastVisible, setLastVisible] = useState<any>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [oppositeGender, setOppositeGender] = useState<string | null>(null);
+  
+  const [region, setRegion] = useState<string | null>(null); // New state for region
+  const [city, setCity] = useState<string | null>(null); // New state for region
 
   useEffect(() => {
     const currentUser = firebaseApp.auth().currentUser;
-
     if (!currentUser) {
       setLoading(false);
       return;
@@ -32,18 +34,39 @@ const Anasayfa = ({ navigation, initialized }: any) => {
         const gender = userData.gender === "male" ? "female" : "male";
         setOppositeGender(gender);
 
-        // Fetch the users with the `.get()` method
+        setRegion(userData.regionCode || "US"); // set region or default to 'US'
+        setCity(userData.city || null);
+
+        // Modify the fetch logic
         const snapshot = await firebaseApp
           .firestore()
           .collection("users")
           .where("gender", "==", gender)
+          .where("regionCode", "==", userData.regionCode || "US") // add regionCode filter
           .limit(8)
           .get();
 
         const fetchedUsers = snapshot.docs.map((doc) => doc.data());
 
-        if (snapshot.docs.length > 0) {
-          setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
+        if (
+          snapshot.docs.length === 0 &&
+          userData.regionCode &&
+          userData.regionCode !== "US"
+        ) {
+          // If no users were found for the regionCode, fetch users from the US as fallback
+          const fallbackSnapshot = await firebaseApp
+            .firestore()
+            .collection("users")
+            .where("gender", "==", gender)
+            .where("regionCode", "==", "US")
+            .limit(8)
+            .get();
+
+          fetchedUsers.push(...fallbackSnapshot.docs.map((doc) => doc.data()));
+        }
+
+        if (fetchedUsers.length > 0) {
+          setLastVisible(snapshot.docs[fetchedUsers.length - 1]);
         }
 
         setUsers(fetchedUsers);
@@ -103,7 +126,7 @@ const Anasayfa = ({ navigation, initialized }: any) => {
         numColumns={2}
         key={2}
         renderItem={({ item }) => (
-          <UserCard item={item} navigation={navigation} />
+          <UserCard item={item} navigation={navigation} currentUserCity={city} />
         )}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}
@@ -112,4 +135,4 @@ const Anasayfa = ({ navigation, initialized }: any) => {
   );
 };
 
-export default Anasayfa;
+export default Homepage;

@@ -50,6 +50,17 @@ export default StyleSheet.create({
     marginLeft: 30,
     marginRight: 30,
   },
+  buttonStyles: {
+  backgroundColor: "#2cc1d7",
+  paddingHorizontal: 20, // Adds horizontal padding
+  paddingVertical: 12,   // Adds vertical padding
+  borderRadius: 12,      // Rounded corners
+  elevation: 5,          // Adds shadow for Android
+  shadowColor: "#000",   // Shadow color
+  shadowOffset: { width: 0, height: 2 }, // X-Y offset of shadow
+  shadowOpacity: 0.3,    // Shadow opacity
+  shadowRadius: 5,       // Radius of the shadow
+},
   focusedInput: {
     borderWidth: 4,
     borderColor: "red",

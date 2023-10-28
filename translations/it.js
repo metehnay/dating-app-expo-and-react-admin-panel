@@ -180,6 +180,8 @@ const it = {
     "Invia messaggi illimitati senza raggiungere il limite di messaggi.",
   feature6_text_key: "Offri un caffè gratuito a 3 persone.",
   confirm_vip_choice_key: "Conferma Scelta VIP",
+  locationPermissionTitle: "Trova Persone Vicine",
+
   cancel_key: "Annulla",
   MyPhysicalStats: "Le mie statistiche fisiche",
   HeightM: "Altezza (m)",

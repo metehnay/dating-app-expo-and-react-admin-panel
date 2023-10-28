@@ -133,6 +133,7 @@ const en = {
   locationPermissionDescription:
     "This app requires location permissions to find your location. Please enable it in your device settings.",
   PermissionNeeded: "Permission Needed to access media.",
+  locationPermissionTitle: "Find Nearby People",
 
   // PROFILE
   profileUpdated: "Your profile has been updated successfully.",
@@ -169,9 +170,9 @@ const en = {
 
   //MESSAGES
 
-  dailyLimitGetVip: "You've reached the daily limit, upgrade to PRO.",
+  dailyLimitGetVip: "You've reached the daily limit, upgrade to VIP.",
   closeText: "Close",
-  getVipOpenFeatures: "Upgrade to PRO to unlock all features.",
+  getVipOpenFeatures: "Upgrade to VIP to unlock all features.",
   NoMessageYet: "No messages yet.",
   WriteMessage: "Write a message...",
 

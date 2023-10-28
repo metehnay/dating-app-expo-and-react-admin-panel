@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "love",
+    "name": "Loveify",
     "slug": "love",
-    "version": "1.0.0",
+    "version": "1.2.3",
     "orientation": "portrait",
     "scheme": "myapp",
     "icon": "./assets/icon.png",
@@ -19,7 +19,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.aydometehan2.love",
-      "versionCode": 16,
+      "versionCode": 18,
       "googleServicesFile": "./google-services.json",
       "permissions": ["com.android.vending.BILLING"],
       "useNextNotificationsApi": true

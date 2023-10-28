@@ -16,6 +16,7 @@ const zh = {
   surfing: "冲浪",
   biking: "骑自行车",
   noMatchesText: "你还没有任何匹配。继续滑动找到你的匹配!",
+  locationPermissionTitle: "找附近的人",
 
   userHobbies: "爱好",
   sendUserMessage: "发送消息",

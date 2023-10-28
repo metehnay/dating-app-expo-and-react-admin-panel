@@ -148,12 +148,13 @@ const es = {
   homePage: "Inicio",
   getVipMessage: "Compra VIP para encontrar personas cerca de ti.",
   okConfirm: "OK",
+  locationPermissionTitle: "Encontrar Personas Cercanas",
 
   //MESSAGES
-  dailyLimitGetVip: "Has alcanzado el límite diario, actualiza a PRO.",
+  dailyLimitGetVip: "Has alcanzado el límite diario, actualiza a VIP.",
   closeText: "Cerrar",
   getVipOpenFeatures:
-    "Actualiza a PRO para desbloquear todas las características.",
+    "Actualiza a VIP para desbloquear todas las características.",
   NoMessageYet: "Aún no hay mensajes.",
   WriteMessage: "Escribir un mensaje...",
 

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import styles from "./style";
 import SVGComponent from "./../../SVGComponent";
-import { useTranslation } from './../../../TranslationContext';
+import { useTranslation } from "./../../../TranslationContext";
 
 const getAge = (birthdateString: any) => {
   if (!birthdateString) {
@@ -25,12 +25,11 @@ const getAge = (birthdateString: any) => {
   return age;
 };
 
-const UserCard = ({ item, navigation }: any) => {
+const UserCard = ({ item, navigation, currentUserCity }: any) => {
   const screenWidth = Dimensions.get("window").width;
   const imageWidth = screenWidth / 2 - 10;
   const imageHeight = imageWidth * 1.4; // Set a fixed height, adjust as needed
   const i18n = useTranslation(); // Step 2: Use
-
   const displayedHobbies = item.hobbies?.slice(0, 1) || [];
 
   return (
@@ -66,12 +65,11 @@ const UserCard = ({ item, navigation }: any) => {
               <SVGComponent iconName="dot" customWidth="14" customHeight="14" />
             </Text>
           </View>
-          {displayedHobbies.map((hobby: string, index: number) => (
-            <View key={index} style={styles.hobbyPill}>
-              {/* Step 3: Replace the displayed hobby text with the translated text */}
-              <Text style={styles.hobbyText}>{i18n.t(hobby)}</Text>
+          {currentUserCity && ( // Conditional rendering based on currentUserCity
+            <View style={styles.hobbyPill}>
+              <Text style={styles.hobbyText}>{currentUserCity}</Text>
             </View>
-          ))}
+          )}
         </View>
       </View>
     </TouchableOpacity>

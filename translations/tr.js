@@ -110,7 +110,8 @@ const tr = {
   ConfirmButton: "Onayla",
   locationPermissionRequired: "Konum İzni Gerekli",
   locationPermissionDescription:
-    "Bu uygulama, konumunuzu bulmak için konum izinlerini gerektirir. Lütfen cihaz ayarlarınızda etkinleştirin.",
+    "Size uygun ülkeden profiller gösterebilmemiz için GPS izninin aktif olması gerekiyor.",
+    locationPermissionTitle: "Sana Yakın Kişileri Bul",
   PermissionNeeded: "Medya erişimi için izin gereklidir.",
 
   //PROFILE
@@ -147,9 +148,9 @@ const tr = {
   okConfirm: "Tamam",
 
   //MESSAGES
-  dailyLimitGetVip: "Günlük limiti aştınız, PRO'ya yükseltin.",
+  dailyLimitGetVip: "Günlük limiti aştınız, sınırsız limit için VIP üye olabilirsiniz.",
   closeText: "Kapat",
-  getVipOpenFeatures: "Tüm özellikleri açmak için PRO'ya yükseltin.",
+  getVipOpenFeatures: "Tüm özellikleri açmak için VIP olun.",
   NoMessageYet: "Henüz mesaj yok.",
   WriteMessage: "Bir mesaj yaz...",
 

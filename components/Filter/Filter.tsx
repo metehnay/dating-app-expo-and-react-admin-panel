@@ -17,7 +17,6 @@ import CityPicker from "./../Hooks/CityPicker";
 
 type FilterPreferences = {
   gender: string;
-  city: string;
   age: any;
 };
 
@@ -25,7 +24,6 @@ const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   // State for preferences
   const [preferences, setPreferences] = useState<FilterPreferences>({
     gender: "",
-    city: "",
     age: { start: 18, end: 30 },
   });
 
@@ -36,7 +34,6 @@ const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   // State for gender dropdown visibility
   const [isGenderDropdownVisible, setIsGenderDropdownVisible] = useState(false);
   // State for city picker visibility
-  const [isCityPickerVisible, setIsCityPickerVisible] = useState(false);
   // New state for controlling filter visibility
   const [isFilterVisible, setIsFilterVisible] = useState(true);
 
@@ -63,9 +60,7 @@ const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
 
     // City filter logic
-    if (preferences.city) {
-      usersRef = usersRef.where("city", "==", preferences.city);
-    }
+  
 
     // Birthdate range filter based on age
     if (preferences.age) {
@@ -146,21 +141,7 @@ const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
           )}
 
-          {/* City Filter */}
-          <Text>Şehir:</Text>
-          <TouchableOpacity onPress={() => setIsCityPickerVisible(true)}>
-            <Text style={styles.dropdownPlaceholder}>
-              {preferences.city || "Şehir Seçin"}
-            </Text>
-          </TouchableOpacity>
-          <CityPicker
-            isVisible={isCityPickerVisible}
-            onClose={() => setIsCityPickerVisible(false)}
-            onSelectCity={(selectedCity) => {
-              setPreferences((prev) => ({ ...prev, city: selectedCity }));
-            }}
-          />
-
+        
           {/* Age Filter */}
           <Text>Yaş aralığı:</Text>
           <View style={styles.sliderContainer}>
