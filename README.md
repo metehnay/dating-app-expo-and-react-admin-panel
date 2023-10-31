@@ -1,7 +1,6 @@
 All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoesnotexist.com/). 
 
-![My Image]([https://example.com/path/to/image.jpg](https://i.imgur.com/HYVQdIo.mp4))
-
+![gif](https://github.com/metehnay/expo-react-native-dating-app-and-tailwind-admin-panel/assets/99619400/3e98e69c-6d30-4141-bdcf-6e44580f7113)
 
 
 
