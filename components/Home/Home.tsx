@@ -30,18 +30,15 @@ export const Home = ({ navigation }: any) => {
 
 const signInWithGoogle = async () => {
   try {
-    // Start the loading animation
     setLoading(true);
 
     await GoogleSignin.hasPlayServices();
     const userInfo = await GoogleSignin.signIn();
 
-    // Firebase authentication
     const googleCredential = GoogleAuthProvider.credential(userInfo.idToken);
     const firebaseAuth = getAuth(firebaseApp);
     const result = await signInWithCredential(firebaseAuth, googleCredential);
 
-    // Check Firestore if user's email already exists
     const db = firebaseApp.firestore();
     const usersRef = db.collection("users");
     const userSnapshot = await usersRef
@@ -49,24 +46,19 @@ const signInWithGoogle = async () => {
       .get();
 
     if (userSnapshot.empty) {
-      // Store the user's email (or any other required info) in Firestore
       await usersRef.add({
         email: userInfo.user.email,
-        // ...any other data you want to store
       });
-      // Stop the loading animation before navigating
       setLoading(false);
       navigation.navigate("Sign Up", {
         userData: userInfo.user,
         googleSignIn: true,
       });
     } else {
-      // Stop the loading animation before navigating
       setLoading(false);
       navigation.navigate("Homepage");
     }
   } catch (error) {
-    // Stop the loading animation in case of error
     setLoading(false);
     alert(i18n.t("invalid"));
   }
@@ -103,15 +95,13 @@ const signInWithGoogle = async () => {
   };
 
  const handleTermsLinkPress = () => {
-   // Replace "https://www.yourwebsite.com/terms" with the actual URL of your terms page.
    const termsURL =
      "https://firebasestorage.googleapis.com/v0/b/loveify-db.appspot.com/o/terms.html?alt=media&token=bec81aff-4504-4679-ba01-e816a24460ef";
    Linking.openURL(termsURL);
  };
 
   const handlePrivacyPolicyLinkPress = () => {
-    // Define the action you want to take when the "Gizlilik Politikası" link is pressed.
-    // For example, you can navigate to a "Privacy Policy" screen.
+
       const policyUrl =
         "https://firebasestorage.googleapis.com/v0/b/loveify-db.appspot.com/o/policy.html?alt=media&token=788df175-3417-45db-9434-44cd1f39e9bb";
       Linking.openURL(policyUrl);

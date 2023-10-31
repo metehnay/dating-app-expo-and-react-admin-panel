@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Modal, View, Text, Pressable, ScrollView } from "react-native";
-import { styles } from "./VIPstyles"; // adjust the path accordingly
+import { styles } from "./VIPstyles"; 
 import { firebaseApp, db } from "../../firebaseConfig";
 import SVGComponent from "../SVGComponent";
 import { useTranslation } from "../../TranslationContext";
 
 const VIPModal = ({ isVisible, closeModal }: any) => {
-  const [userJetons, setUserJetons] = useState<number>(0); // Make sure this line exists at the top of your BuyToken function
+  const [userJetons, setUserJetons] = useState<number>(0);  
   const [selectedVIP, setSelectedVIP] = useState<keyof typeof VIP_COST | null>(
     null
   );
@@ -40,36 +40,31 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
 
  const handleVIPPurchase = async () => {
     if (!selectedVIP) {
-      alert(t("please_select_a_vip_package_key")); // Translation: "Lütfen bir VIP paketi seçin!"
+      alert(t("please_select_a_vip_package_key")); 
       return;
     }
 
     if (userJetons < VIP_COST[selectedVIP]) {
-      alert(t("insufficient_jetons_key")); // Translation: "Yetersiz jeton!"
+      alert(t("insufficient_jetons_key")); 
       return;
     }
 
-   // Deduct jetons from local state
    setUserJetons((prevJetons) => prevJetons - VIP_COST[selectedVIP]);
 
-   // Calculate expiration date
    const currentDate = new Date();
-   let expirationDate: Date = new Date(currentDate); // Initialized to current date
+   let expirationDate: Date = new Date(currentDate); 
 
     if (selectedVIP === t("one_month_vip_key")) {
-      // "1 Aylık VIP"
       expirationDate = new Date(
         currentDate.setMonth(currentDate.getMonth() + 1)
-      ); // Add 1 month
+      ); 
     } else if (selectedVIP === t("one_year_vip_key")) {
-      // "1 Yıllık VIP"
       expirationDate = new Date(
         currentDate.setFullYear(currentDate.getFullYear() + 1)
-      ); // Add 1 year
+      ); 
     }
 
 
-   // Update jetons, isVip status, and VIP expiration date in Firebase
    const userId = firebaseApp.auth().currentUser?.uid;
    if (!userId) {
      return;
@@ -80,12 +75,11 @@ const VIPModal = ({ isVisible, closeModal }: any) => {
      await userRef.update({
        jetons: userJetons - VIP_COST[selectedVIP],
        isVip: true,
-       vipExpiration: expirationDate.toISOString(), // Convert to string for easy storage and retrieval
+       vipExpiration: expirationDate.toISOString(), 
      });
-     alert(t("vip_purchase_successful_key")); // Translation: "VIP satın alma başarılı!"
+     alert(t("vip_purchase_successful_key")); 
    } catch (error) {
-     alert(t("an_error_occurred_key")); // Translation: "Bir hata oluştu!"
-     // In case of an error, revert the local state change
+     alert(t("an_error_occurred_key")); 
      setUserJetons((prevJetons) => prevJetons + VIP_COST[selectedVIP]);
    }
   

@@ -9,7 +9,6 @@ import BalanceView from "./BalanceView";
 import SVGComponent from "../SVGComponent";
 import VIPModal from "./VIPModal";
 
-// Constants are defined explicitly for the component's configuration and functionality.
 const APIKeys = {
   google: "goog_IFicDqoerhXfMZIzKwYuvafFCOq",
 };
@@ -21,31 +20,24 @@ const JETON_MAPPING = {
   "5000jeton": 5000,
 };
 
-// The function to format product identifiers for UI is provided in full, detailing its purpose and logic.
 function formatIdentifier(identifier: string): string {
-  // The regex replace function is used to format the identifier into a user-friendly string.
   return identifier.replace(
     /(\d+)([a-zA-Z]+)/,
     (_, num, word) => `${num} ${word.charAt(0).toUpperCase()}${word.slice(1)}`
   );
 }
 
-// The main component function is fully defined, ensuring complete functionality and no omitted steps.
 export default function BuyToken() {
-  // States for modal visibility, current offerings, and user's jetons are initialized.
   const [modalVisible, setModalVisible] = useState(false);
   const [currentOffering, setCurrentOffering] =
     useState<PurchasesOffering | null>(null);
   const [userJetons, setUserJetons] = useState<number>(0);
 
-  // The useEffect hook is employed to initialize necessary configurations and perform initial data fetching.
   useEffect(() => {
-    // Configuration step for the Purchases SDK specific to Android platform.
     if (Platform.OS === "android") {
       Purchases.configure({ apiKey: APIKeys.google });
     }
 
-    // An asynchronous function defined to fetch product offerings and user's jetons from the database.
     const setup = async () => {
       try {
         const offerings = await Purchases.getOfferings();
@@ -54,7 +46,6 @@ export default function BuyToken() {
         const userId = firebaseApp.auth().currentUser?.uid;
         if (userId) {
           const userRef = db.collection("users").doc(userId);
-          // Real-time updates from Firestore are obtained using the onSnapshot method.
           const unsubscribe = userRef.onSnapshot(
             (doc) => {
               if (doc.exists) {
@@ -68,7 +59,6 @@ export default function BuyToken() {
             }
           );
 
-          // Cleanup is performed to unsubscribe from Firestore listener when the component is unmounted.
           return () => unsubscribe();
         }
       } catch (error) {
@@ -76,11 +66,9 @@ export default function BuyToken() {
       }
     };
 
-    // The setup function is invoked immediately within the useEffect.
     setup();
   }, []);
 
-  // Function definition for handling the purchase of a product.
   const purchaseProduct = async (product: any) => {
     try {
       const purchaseMade = await Purchases.purchasePackage(product);
@@ -110,12 +98,10 @@ export default function BuyToken() {
     }
   };
 
-  // If there's no current offerings data, the LoadingView is rendered.
   if (!currentOffering) {
     return <LoadingView />;
   }
 
-  // The component's UI is rendered based on the current state and data.
   return (
     <View style={styles.container}>
       <VIPModal
@@ -138,7 +124,6 @@ export default function BuyToken() {
   );
 }
 
-// The individual product rendering logic is memoized to prevent unnecessary re-renders.
 const ProductPressable = memo(
   ({
     pkg,

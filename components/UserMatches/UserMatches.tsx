@@ -52,7 +52,7 @@ const UserMatches = ({ navigation }: any) => {
           renderItem={({ item }) => {
             if (!item || !item.id) {
               console.error("Invalid item:", item);
-              return null; // Render nothing for this item.
+              return null;
             }
 
             return (

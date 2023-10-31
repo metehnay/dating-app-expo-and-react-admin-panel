@@ -36,7 +36,6 @@ const UserProfile = ({ route, navigation }: any) => {
         return;
       }
 
-      // Use a single document reference for loggedInUserId
       const userRef = db.collection("users").doc(loggedInUserId);
 
       const doc = await userRef.get();
@@ -55,7 +54,6 @@ const UserProfile = ({ route, navigation }: any) => {
         return;
       }
 
-      // Use a single document reference for userLikes
       const userLikesRef = db.collection("userLikes").doc(user.id);
 
       const likeDoc = await userLikesRef.get();
@@ -90,7 +88,6 @@ const UserProfile = ({ route, navigation }: any) => {
    const userLikesRef = db.collection("userLikes").doc(user.id);
    const likeDoc = await userLikesRef.get();
 
-   // Check if the user has enough jetons
  if (!jetons || jetons < JETON_COST) {
    setModalMessage(i18n.t("notEnoughJeton"));
    setModalVisible(true);
@@ -114,7 +111,6 @@ const UserProfile = ({ route, navigation }: any) => {
              likedUsers: [...likeData.likedUsers, loggedInUserId],
            });
 
-           // Deduct the jetons from the user's account
            const userRef = db.collection("users").doc(loggedInUserId);
           const updatedJetons = jetons ? jetons - JETON_COST : 0;
           await userRef.update({
@@ -123,7 +119,6 @@ const UserProfile = ({ route, navigation }: any) => {
 
            setJetons((prevJetons) => prevJetons && prevJetons - JETON_COST);
 
-           // Add a notification to the notifications collection
            await db.collection("notifications").add({
              userId: user.id,
              fromUserId: loggedInUserId,
@@ -134,7 +129,6 @@ const UserProfile = ({ route, navigation }: any) => {
            setLikes(newLikeCount);
            setHasLiked(true);
 
-           // Displaying a modal indicating the like was sent
            setModalMessage(i18n.t("likeSent"));
            setModalVisible(true);
          }
@@ -145,7 +139,6 @@ const UserProfile = ({ route, navigation }: any) => {
          likedUsers: [loggedInUserId],
        });
 
-       // Deduct the jetons from the user's account
        const userRef = db.collection("users").doc(loggedInUserId);
        await userRef.update({
          jetons: jetons - JETON_COST,
@@ -153,7 +146,6 @@ const UserProfile = ({ route, navigation }: any) => {
 
        setJetons((prevJetons) => prevJetons && prevJetons - JETON_COST);
 
-       // Add a notification to the notifications collection
        await db.collection("notifications").add({
          userId: user.id,
          fromUserId: loggedInUserId,
@@ -164,7 +156,6 @@ const UserProfile = ({ route, navigation }: any) => {
        setLikes(1);
        setHasLiked(true);
 
-       // Displaying a modal indicating the like was sent
        setModalVisible(true);
      }
    } catch (error) {
@@ -237,7 +228,7 @@ const UserProfile = ({ route, navigation }: any) => {
       <ReusableModal
         isVisible={isModalVisible}
         onClose={() => setModalVisible(false)}
-        onConfirm={() => setModalVisible(false)} // You can define another behavior for the button if needed
+        onConfirm={() => setModalVisible(false)}
         iconName={modalMessage === i18n.t("notEnoughJeton") ? "vip1" : "onay"}
         message={modalMessage}
         buttonText="Tamam"

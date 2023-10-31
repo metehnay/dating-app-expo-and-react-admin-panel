@@ -165,12 +165,12 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   plansContainer: {
-    flexDirection: "column", // Change from 'row' to 'column'
-    alignItems: "center", // Centers the plans in the column
+    flexDirection: "column", 
+    alignItems: "center",
     marginBottom: 30,
   },
   plan: {
-    width: "100%", // Make plan full width
+    width: "100%",
     margin: 5,
     borderWidth: 2,
     borderColor: "#ddd",

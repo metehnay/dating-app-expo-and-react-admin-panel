@@ -46,8 +46,8 @@ interface User {
   uid: string;
   email: string | null;
   displayName: string | null;
-  password?: string; // Make password optional
-  name?: string; // Make name optional
+  password?: string; 
+  name?: string;
   gender?: string;
 }
 
@@ -55,7 +55,6 @@ type MessageScreenRouteParams = {
   user: {
     fullName: string;
     imageUrl: string;
-    // ... Other properties that user might have
   };
 };
 
@@ -72,12 +71,12 @@ function App() {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
-        "1043146951050-scdt3fh8ci1fid9kirutg0s83e3raepq.apps.googleusercontent.com", // this is required for Android
-      offlineAccess: true, // this is for requesting server auth code.
+        "1043146951050-scdt3fh8ci1fid9kirutg0s83e3raepq.apps.googleusercontent.com", 
+      offlineAccess: true, 
     });
   }, []);
    const [isAuth, setIsAuth] = useState(false);
-   const [initialized, setInitialized] = useState(false); // State to check if the app has completed its initial data retrieval
+   const [initialized, setInitialized] = useState(false); 
    const [authListenerCompleted, setAuthListenerCompleted] = useState(false);
    const [fontsLoaded] = useFonts({
      Poppins: require("./assets/fonts/Poppins-Medium.ttf"),
@@ -95,16 +94,14 @@ function App() {
          setUser(null);
          setIsAuth(false);
        }
-       setAuthListenerCompleted(true); // Important line
+       setAuthListenerCompleted(true); 
      });
 
      return () => unsubscribe();
    }, []);
 
-   // Fetch user from AsyncStorage
    useEffect(() => {
      if (authListenerCompleted) {
-       // Only run if auth listener has completed
        const fetchUserFromStorage = async () => {
          try {
            const storedUserData = await AsyncStorage.getItem("user");
@@ -173,7 +170,7 @@ function App() {
           <Stack.Navigator
             initialRouteName={isAuth ? "Homepage" : "Home"}
             screenOptions={{
-              headerShown: true, // Show header for all screens
+              headerShown: true, 
               headerBackTitleVisible: false,
               headerShadowVisible: false,
               headerTitleStyle: {
@@ -275,7 +272,6 @@ function App() {
               name="UserProfile"
               component={UserProfile}
               options={({ route }) => {
-                // Here we tell TypeScript that route.params is of type MessageScreenRouteParams
                 const params = route.params as MessageScreenRouteParams;
 
                 return { headerTitle: params.user?.fullName || "Chat" };
@@ -311,8 +307,8 @@ const styles = StyleSheet.create({
   headerImage: {
     width: 55,
     height: 55,
-    borderRadius: 50, // to make it circular
-    marginRight: 10, // space between image and text
+    borderRadius: 50, 
+    marginRight: 10, 
   },
   headerText: {
     color: "#ffffff",

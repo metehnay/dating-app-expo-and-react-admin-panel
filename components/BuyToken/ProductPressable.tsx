@@ -25,7 +25,7 @@ const ProductPressable: React.FC<ProductPressableProps> = ({
   pkg,
   purchaseProduct,
 }) => {
-  const { t } = useTranslation(); // Destructure the t function for translations
+  const { t } = useTranslation(); 
 
   return (
     <Pressable

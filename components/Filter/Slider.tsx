@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 const SCREEN_WIDTH: number = Dimensions.get("window").width;
-const SLIDER_WIDTH: number = SCREEN_WIDTH - 30; // leaving 30 margin on each side
+const SLIDER_WIDTH: number = SCREEN_WIDTH - 30;
 const MAX_AGE: number = 60;
 const MIN_AGE: number = 18;
 const THUMB_RADIUS: number = 15;
@@ -47,7 +47,7 @@ const Slider: React.FC<SliderProps> = ({ onChange }) => {
           if (newLeft >= 0 && newLeft <= rightThumb - 60) {
             setLeftThumb(newLeft);
             leftValue.current = calculateAge(newLeft / SLIDER_WIDTH);
-            onChange && onChange(leftValue.current, rightValue.current); // Add this line
+            onChange && onChange(leftValue.current, rightValue.current); 
           }
         },
         onPanResponderRelease: () => {},
@@ -66,7 +66,7 @@ const Slider: React.FC<SliderProps> = ({ onChange }) => {
             rightValue.current = calculateAge(
               1 - (SLIDER_WIDTH - newRight) / SLIDER_WIDTH
             );
-            onChange && onChange(leftValue.current, rightValue.current); // Add this line
+            onChange && onChange(leftValue.current, rightValue.current);
           }
         },
         onPanResponderRelease: () => {},
@@ -90,7 +90,7 @@ const Slider: React.FC<SliderProps> = ({ onChange }) => {
             styles.thumb,
             {
               left: leftThumb - THUMB_RADIUS,
-              zIndex: 1, // ensures the left thumb is on top when they overlap
+              zIndex: 1, 
               borderColor:
                 leftThumb === rightThumb - THUMB_RADIUS * 2
                   ? "transparent"
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   slider: {
     width: SLIDER_WIDTH,
     height: 40,
-    backgroundColor: "#E0E0E0", // A bit darker base color to contrast with the track
+    backgroundColor: "#E0E0E0",  
     borderRadius: 20,
     position: "relative",
     marginBottom: 20,
@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   baseTrack: {
-    // This is new
     height: 8,
     borderRadius: 4,
     backgroundColor: "#D0D0D0",
@@ -171,8 +170,8 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOpacity: 0.15,
     shadowRadius: 6,
-    borderWidth: 2, // New line
-    borderColor: "#FFFFFF", // New line
+    borderWidth: 2, 
+    borderColor: "#FFFFFF", 
   },
 });
 

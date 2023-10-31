@@ -21,23 +21,17 @@ type FilterPreferences = {
 };
 
 const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  // State for preferences
   const [preferences, setPreferences] = useState<FilterPreferences>({
     gender: "",
     age: { start: 18, end: 30 },
   });
 
-  // State for users
   const [users, setUsers] = useState<any[]>([]);
-  // State for loading state
   const [loading, setLoading] = useState(false);
-  // State for gender dropdown visibility
   const [isGenderDropdownVisible, setIsGenderDropdownVisible] = useState(false);
-  // State for city picker visibility
-  // New state for controlling filter visibility
+
   const [isFilterVisible, setIsFilterVisible] = useState(true);
 
-  // Helper function to get birthdate range based on age
   const getBirthdateRange = (
     ageStart: number,
     ageEnd: number
@@ -48,21 +42,16 @@ const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     return [`1-1-${endBirthYearEnd}`, `31-12-${endBirthYearStart}`];
   };
 
-  // Function to apply filters
   const applyFilters = async () => {
     setLoading(true);
     let usersRef: firebase.firestore.Query<firebase.firestore.DocumentData> =
       firebaseApp.firestore().collection("users");
 
-    // Gender filter logic
-    if (preferences.gender !== "any" && preferences.gender !== "") {
+     if (preferences.gender !== "any" && preferences.gender !== "") {
       usersRef = usersRef.where("gender", "==", preferences.gender);
     }
 
-    // City filter logic
-  
 
-    // Birthdate range filter based on age
     if (preferences.age) {
       const [startDate, endDate] = getBirthdateRange(
         preferences.age.start,
@@ -81,11 +70,10 @@ const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       console.error("Error fetching users:", error);
     } finally {
       setLoading(false);
-      setIsFilterVisible(false); // Hide the filter after applying
+      setIsFilterVisible(false);
     }
   };
 
-  // Function to translate gender for display purposes
   const translateGender = (gender: string) => {
     switch (gender) {
       case "male":
@@ -97,7 +85,6 @@ const FilterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   };
 
-  // The main render function
   return (
     <View style={styles.container}>
       {loading && <LoadingScreen loading={true} />}
@@ -185,7 +172,7 @@ const styles = StyleSheet.create({
   },
   showFiltersButton: {
     padding: 15,
-    backgroundColor: "#ff95d3", // Example color for visibility. Adjust as needed.
+    backgroundColor: "#ff95d3", 
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,

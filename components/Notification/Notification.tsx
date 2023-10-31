@@ -34,10 +34,9 @@ const NotificationScreen = () => {
         data.imageUrl = userInfo.imageUrl;
         fetchedNotifications.push(data);
 
-        // If the notification type is "coffee", then add a "viewed" notification right after
         if (data.type === "coffee") {
           const viewedNotification = {
-            ...data, // copying previous notification details
+            ...data, 
             type: "viewed",
           };
           fetchedNotifications.push(viewedNotification);
@@ -108,7 +107,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 40,
     height: 40,
-    borderRadius: 20, // Makes it circular
+    borderRadius: 20, 
     marginRight: 10,
   },
   notificationTextContainer: {
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
   },
   emphasis: {
     fontWeight: "bold",
-    color: "#FF4500", // default color for like
+    color: "#FF4500", 
   },
   emphasis5: {
     color: "gray",
@@ -142,11 +141,11 @@ const styles = StyleSheet.create({
   },
   emphasisCoffee: {
     fontWeight: "bold",
-    color: "#A0522D", // brown for coffee
+    color: "#A0522D", 
   },
   emphasisStar: {
     fontWeight: "bold",
-    color: "#800080", // purple for star
+    color: "#800080",
   },
 });
 

@@ -56,12 +56,12 @@ const PhysicalAttributesModal: React.FC<Props> = ({
 
   const heightOptions = Array.from(
     { length: 71 },
-    (_, i) => (i + 140) / 100 // Generate heights from 1.40m to 2.10m
-  ).map((height) => height.toFixed(2)); // Format heights to two decimal places
+    (_, i) => (i + 140) / 100 
+  ).map((height) => height.toFixed(2));
 
   const weightOptions = Array.from({ length: 131 }, (_, i) => 30 + i).map(
     (weight) => weight.toString()
-  ); // Generate weights from 30 to 160
+  );
 
 
   const [showHeightDropdown, setShowHeightDropdown] = useState(false);
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 5,
     maxHeight: 150,
-    backgroundColor: "#FFFFFF", // Dropdown background color
+    backgroundColor: "#FFFFFF", 
   },
   scrollContainer: {
     flexGrow: 1,

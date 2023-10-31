@@ -11,8 +11,8 @@ const Homepage = ({ navigation, initialized }: any) => {
   const [isFetching, setIsFetching] = useState(false);
   const [oppositeGender, setOppositeGender] = useState<string | null>(null);
   
-  const [region, setRegion] = useState<string | null>(null); // New state for region
-  const [city, setCity] = useState<string | null>(null); // New state for region
+  const [region, setRegion] = useState<string | null>(null); 
+  const [city, setCity] = useState<string | null>(null);  
 
   useEffect(() => {
     const currentUser = firebaseApp.auth().currentUser;
@@ -34,15 +34,14 @@ const Homepage = ({ navigation, initialized }: any) => {
         const gender = userData.gender === "male" ? "female" : "male";
         setOppositeGender(gender);
 
-        setRegion(userData.regionCode || "US"); // set region or default to 'US'
+        setRegion(userData.regionCode || "US"); 
         setCity(userData.city || null);
 
-        // Modify the fetch logic
         const snapshot = await firebaseApp
           .firestore()
           .collection("users")
           .where("gender", "==", gender)
-          .where("regionCode", "==", userData.regionCode || "US") // add regionCode filter
+          .where("regionCode", "==", userData.regionCode || "US")
           .limit(8)
           .get();
 
@@ -53,7 +52,6 @@ const Homepage = ({ navigation, initialized }: any) => {
           userData.regionCode &&
           userData.regionCode !== "US"
         ) {
-          // If no users were found for the regionCode, fetch users from the US as fallback
           const fallbackSnapshot = await firebaseApp
             .firestore()
             .collection("users")

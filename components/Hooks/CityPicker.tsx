@@ -16,22 +16,20 @@ interface CityPickerProps {
 }
 
 const cities = [
-  // Turkish Speaking Country
   { name: "Turkey", flag: "🇹🇷" },
 
-  // English Speaking Countries
   { name: "United States", flag: "🇺🇸" },
   { name: "United Kingdom", flag: "🇬🇧" },
   { name: "Australia", flag: "🇦🇺" },
   { name: "New Zealand", flag: "🇳🇿" },
   { name: "Ireland", flag: "🇮🇪" },
-  { name: "South Africa", flag: "🇿🇦" }, // English is one of the official languages
-  { name: "India", flag: "🇮🇳" }, // English is one of the official languages
-  { name: "Pakistan", flag: "🇵🇰" }, // English is one of the official languages
+  { name: "South Africa", flag: "🇿🇦" },
+  { name: "India", flag: "🇮🇳" }, 
+  { name: "Pakistan", flag: "🇵🇰" },
   { name: "Nigeria", flag: "🇳🇬" },
-  { name: "Philippines", flag: "🇵🇭" }, // English is one of the official languages
-  { name: "Singapore", flag: "🇸🇬" }, // English is one of the official languages
-  { name: "Malta", flag: "🇲🇹" }, // English is one of the official languages
+  { name: "Philippines", flag: "🇵🇭" }, 
+  { name: "Singapore", flag: "🇸🇬" },
+  { name: "Malta", flag: "🇲🇹" },
   { name: "Jamaica", flag: "🇯🇲" },
 
   // Spanish Speaking Countries

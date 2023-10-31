@@ -6,7 +6,7 @@ import { useTranslation } from "./../../../TranslationContext";
 
 const getAge = (birthdateString: any) => {
   if (!birthdateString) {
-    return "28"; // or return some default value if birthDate is missing
+    return "28"; 
   }
 
   const [day, month, year] = birthdateString.split("-");
@@ -20,7 +20,7 @@ const getAge = (birthdateString: any) => {
   let age = today.getFullYear() - birthdate.getFullYear();
   const m = today.getMonth() - birthdate.getMonth();
   if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {
-    age--; // Subtract a year if the birthday hasn't occurred yet this year
+    age--; 
   }
   return age;
 };
@@ -28,8 +28,8 @@ const getAge = (birthdateString: any) => {
 const UserCard = ({ item, navigation, currentUserCity }: any) => {
   const screenWidth = Dimensions.get("window").width;
   const imageWidth = screenWidth / 2 - 10;
-  const imageHeight = imageWidth * 1.4; // Set a fixed height, adjust as needed
-  const i18n = useTranslation(); // Step 2: Use
+  const imageHeight = imageWidth * 1.4; 
+  const i18n = useTranslation(); 
   const displayedHobbies = item.hobbies?.slice(0, 1) || [];
 
   return (
@@ -65,7 +65,7 @@ const UserCard = ({ item, navigation, currentUserCity }: any) => {
               <SVGComponent iconName="dot" customWidth="14" customHeight="14" />
             </Text>
           </View>
-          {currentUserCity && ( // Conditional rendering based on currentUserCity
+          {currentUserCity && (
             <View style={styles.hobbyPill}>
               <Text style={styles.hobbyText}>{currentUserCity}</Text>
             </View>

@@ -16,7 +16,6 @@ import VIPModal from "./VIPModal";
 import ProductPressable from "./ProductPressable";
 import { useTranslation } from "../../TranslationContext";
 
-// Constants are defined explicitly for the component's configuration and functionality.
 const APIKeys = {
   google: "goog_PVdjbAZwXexWWtSxjDDspHPFkVS",
 };
@@ -29,21 +28,17 @@ const JETON_MAPPING = {
 };
 
 export default function BuyToken() {
-  // States for modal visibility, current offerings, and user's jetons are initialized.
   const [modalVisible, setModalVisible] = useState(false);
   const [currentOffering, setCurrentOffering] =
     useState<PurchasesOffering | null>(null);
   const [userJetons, setUserJetons] = useState<number>(0);
 const i18n = useTranslation();
 
-  // The useEffect hook is employed to initialize necessary configurations and perform initial data fetching.
   useEffect(() => {
-    // Configuration step for the Purchases SDK specific to Android platform.
     if (Platform.OS === "android") {
       Purchases.configure({ apiKey: APIKeys.google });
     }
 
-    // An asynchronous function defined to fetch product offerings and user's jetons from the database.
     const setup = async () => {
       try {
         const offerings = await Purchases.getOfferings();
@@ -52,7 +47,6 @@ const i18n = useTranslation();
         const userId = firebaseApp.auth().currentUser?.uid;
         if (userId) {
           const userRef = db.collection("users").doc(userId);
-          // Real-time updates from Firestore are obtained using the onSnapshot method.
           const unsubscribe = userRef.onSnapshot(
             (doc) => {
               if (doc.exists) {
@@ -66,7 +60,6 @@ const i18n = useTranslation();
             }
           );
 
-          // Cleanup is performed to unsubscribe from Firestore listener when the component is unmounted.
           return () => unsubscribe();
         }
       } catch (error) {
@@ -74,11 +67,9 @@ const i18n = useTranslation();
       }
     };
 
-    // The setup function is invoked immediately within the useEffect.
     setup();
   }, []);
 
-  // Function definition for handling the purchase of a product.
   const purchaseProduct = async (product: any) => {
     try {
       const purchaseMade = await Purchases.purchasePackage(product);
@@ -115,7 +106,6 @@ const i18n = useTranslation();
     </View>
   );
 
-  // If there's no current offerings data, a loading message is displayed to the user.
   if (!currentOffering) {
     return (
       <View style={styles.loadingContainer}>
@@ -124,7 +114,6 @@ const i18n = useTranslation();
     );
   }
 
-  // The component's UI is rendered based on the current state and data.
   return (
     <View style={styles.container}>
       <VIPModal

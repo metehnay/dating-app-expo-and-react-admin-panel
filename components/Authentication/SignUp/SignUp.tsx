@@ -21,14 +21,14 @@ import * as Notifications from "expo-notifications";
 import  LottieView  from 'lottie-react-native';
 const buttonStyles = {
   backgroundColor: "#2cc1d7",
-  paddingHorizontal: 20, // Adds horizontal padding
-  paddingVertical: 12,   // Adds vertical padding
-  borderRadius: 12,      // Rounded corners
-  elevation: 5,          // Adds shadow for Android
-  shadowColor: "#000",   // Shadow color
-  shadowOffset: { width: 0, height: 2 }, // X-Y offset of shadow
-  shadowOpacity: 0.3,    // Shadow opacity
-  shadowRadius: 5,       // Radius of the shadow
+  paddingHorizontal: 20, 
+  paddingVertical: 12,   
+  borderRadius: 12,    
+  elevation: 5,         
+  shadowColor: "#000",   
+  shadowOffset: { width: 0, height: 2 }, 
+  shadowOpacity: 0.3,    
+  shadowRadius: 5,       
 };
 export default function SignUp({ navigation, route }: any) {
   const [fullName, setFullName] = useState<string>("");
@@ -43,7 +43,7 @@ export default function SignUp({ navigation, route }: any) {
   const [loading, setLoading] = useState<boolean>(false);
   const [step, setStep] = useState<number>(1);
   const i18n = useTranslation();
-  const { t } = useTranslation(); // Destructure the translation function from the useTranslation hook
+  const { t } = useTranslation(); 
 const [isGoogleSignIn, setIsGoogleSignIn] = useState<boolean>(false);
 
 useEffect(() => {
@@ -51,17 +51,16 @@ useEffect(() => {
     setIsGoogleSignIn(true);
     const currentUser = firebaseApp.auth().currentUser;
     if (currentUser && currentUser.email) {
-      setEmail(currentUser.email); // Setting the email for Google signed-in users
+      setEmail(currentUser.email); 
     }
   }
 }, [route.params]);
 
   const [locationModalVisible, setLocationModalVisible] =
-    useState<boolean>(true); // show modal by default when the user comes to step 1
+    useState<boolean>(true); 
 
-  // Use of modular functions
   const locationPermission = () =>
-    askForLocationPermission(setSelectedCity, t, setSelectedCode); // Corrected the order of parameters.
+    askForLocationPermission(setSelectedCity, t, setSelectedCode); 
   
     const locationPermissionModal = (
       <Modal
@@ -69,7 +68,7 @@ useEffect(() => {
         transparent={false}
         visible={locationModalVisible}
         onRequestClose={() => {
-          setLocationModalVisible(false); // for Android back button
+          setLocationModalVisible(false); 
         }}
       >
         <View
@@ -93,8 +92,8 @@ useEffect(() => {
             <View
               style={{
                 position: "absolute",
-                top: 100, // Adjust this value as needed
-                left: 25, // Adjust this value as needed
+                top: 100, 
+                left: 25, 
               }}
             >
               <SVGComponent
@@ -104,12 +103,11 @@ useEffect(() => {
               />
             </View>
 
-            {/* Wrapper for the Second SVG Icon */}
             <View
               style={{
                 position: "absolute",
-                top: 100, // Adjust this value as needed, or position them side by side, etc.
-                right: 20, // Adjust this value as needed
+                top: 100,
+                right: 20, 
               }}
             >
               <SVGComponent
@@ -147,7 +145,7 @@ useEffect(() => {
             }}
             style={({ pressed }) => [
               {
-                backgroundColor: pressed ? "#1aa5b9" : "#2cc1d7", // Darken the button when pressed
+                backgroundColor: pressed ? "#1aa5b9" : "#2cc1d7", 
                 padding: 15,
                 borderRadius: 10,
                 width: "100%",
@@ -170,35 +168,27 @@ useEffect(() => {
    */
  
   const onNextStepPress = () => {
-    // If on step 1
     if (step === 1) {
       setLocationModalVisible(false);
 
-      // Check if all fields are filled
       if (!gender || !fullName || !birthDate) {
         alert(i18n.t("emptyField"));
         return;
       }
 
-      // If the user is signing up with Google, immediately try to register
       if (isGoogleSignIn) {
         onRegisterPress();
         return;
       }
 
-      // If not using Google sign-in, proceed to the next step for regular sign-up
       setStep(2);
     }
-    // If on step 2
     else if (step === 2) {
-      // Check if email and password fields are filled (only if not using Google sign-in)
       if (!isGoogleSignIn && (!email || !password)) {
         alert(i18n.t("emptyField"));
         return;
       }
 
-      // Continue the registration process,
-      // if Google sign-in this will have already been done in step 1
       onRegisterPress();
     }
   };
@@ -226,18 +216,16 @@ useEffect(() => {
    * It uses Firebase to create a new user and then updates the Firestore with user details.
    */
   const onRegisterPress = () => {
-    // Common checks for both Google Sign-In and regular sign-up
     if (!fullName || !birthDate || !gender) {
       alert(i18n.t("emptyField"));
       return;
     }
 
-    setLoading(true); // Start the loading process
+    setLoading(true); 
 if (isGoogleSignIn) {
   const currentUser = firebaseApp.auth().currentUser;
 
   if (!currentUser) {
-    // Handle the scenario when there's no current user (e.g., show an error or redirect)
     alert("Error");
     setLoading(false);
     return;
@@ -248,7 +236,7 @@ if (isGoogleSignIn) {
 
   const data = {
     id: uid,
-    email, // Google signed-in users' email can be fetched from Firebase Auth
+    email,
     fullName,
     regionCode: selectedCode,
     city: selectedCity,
@@ -268,7 +256,6 @@ if (isGoogleSignIn) {
       alert(error);
     });
 } else {
-  // For regular sign-up, also check for email and password
   if (!email || !password) {
     alert(i18n.t("emptyField"));
     return;

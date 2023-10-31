@@ -33,7 +33,7 @@ export const askForLocationPermission = async (
   let addresses = await Location.reverseGeocodeAsync(location.coords);
 
   if (addresses && addresses.length > 0) {
-    setSelectedCity(addresses[0].region); // <-- Change from .country to .region
+    setSelectedCity(addresses[0].region); 
     setSelectedCode(addresses[0].isoCountryCode);
   } else {
     retryCount++;
@@ -52,13 +52,13 @@ const attemptFetchingRegionCode = async (
     let addresses = await Location.reverseGeocodeAsync(location.coords);
 
     if (addresses && addresses.length > 0) {
-      setSelectedCity(addresses[0].region); // <-- Change from .country to .region
+      setSelectedCity(addresses[0].region); 
       setSelectedCode(addresses[0].isoCountryCode);
     } else {
       setSelectedCode("US");
       attemptFetchingRegionCode(setSelectedCity, setSelectedCode, location);
     }
-  }, 5000); // Retry after 5 seconds
+  }, 5000);
 };
 
 export const handleImageUpload = async (

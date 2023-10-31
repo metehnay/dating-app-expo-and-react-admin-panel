@@ -45,7 +45,6 @@ const MessageScreen = ({ route }: any) => {
   const { user } = route.params;
   const navigation = useNavigation<any>();
 
-  // State Declarations
   const [messages, setMessages] = useState<Message[]>([]);
   const [text, setText] = useState("");
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -74,7 +73,6 @@ const [jetons, setJetons] = useState<number>(0);
   };
 
   useEffect(() => {
-    // This listener is fired whenever a notification is interacted with (received or clicked)
     const responseListener =
       Notifications.addNotificationResponseReceivedListener((response) => {
         const { action } = response.notification.request.content.data;
@@ -85,7 +83,7 @@ const [jetons, setJetons] = useState<number>(0);
       });
 
     return () => {
-      responseListener.remove(); // Unsubscribe on unmount
+      responseListener.remove(); 
     };
   }, []);
 
@@ -101,7 +99,6 @@ const [jetons, setJetons] = useState<number>(0);
           setCurrentUserId(authUser.uid);
           const conversationId = [authUser.uid, user.id].sort().join("_");
 
-          // Fetching messages for the current conversation
           firestoreUnsubscribe = firebaseApp
             .firestore()
             .collection("messages")
@@ -119,7 +116,6 @@ const [jetons, setJetons] = useState<number>(0);
               setMessages(fetchedMessages);
             });
 
-          // Fetching the isVip status for the current user
           const userDocRef = firebaseApp
             .firestore()
             .collection("users")
@@ -128,30 +124,26 @@ const [jetons, setJetons] = useState<number>(0);
             if (doc.exists) {
               const userData = doc.data();
               setJetons(userData?.jetons || 0);
-              setMessageCount(userData?.messageCount || 0); // setting the messageCount from firestore
+              setMessageCount(userData?.messageCount || 0); 
             }
           });
 
-          // Get Expo push token without checking permissions
-           // Get Expo push token without checking permissions
+         
       try {
         const tokenData = await Notifications.getExpoPushTokenAsync();
-        const expoPushToken = tokenData.data; // this is your token
+        const expoPushToken = tokenData.data; 
 
-        // Store this token in your Firebase user document
         if (authUser.uid && expoPushToken) {
           firebaseApp.firestore().collection("users").doc(authUser.uid).update({
             expoPushToken: expoPushToken,
           });
         }
       } catch (error) {
-       // Add this line to track the error
       }
     }
         
       });
 
-    // Cleanup on component unmount or when the dependencies change
     return () => {
       if (authUnsubscribe) authUnsubscribe();
       if (firestoreUnsubscribe) firestoreUnsubscribe();
@@ -227,7 +219,6 @@ const [jetons, setJetons] = useState<number>(0);
       if (pickedImageUri || image) {
         imageUrl = await uploadImageToFirebase(pickedImageUri || image);
 
-        // Remove the uploaded image URI from sendingImages state
         setSendingImages((prevImages) =>
           prevImages.filter((uri) => uri !== (pickedImageUri || image))
         );
@@ -264,13 +255,11 @@ const [jetons, setJetons] = useState<number>(0);
 
       await firebaseApp.firestore().collection("messages").add(message);
 
-      // Send push notification
-      sendPushNotification(user.id, text); // <-- Added this line
+      sendPushNotification(user.id, text); 
 
       if (!currentUserId) {
         return;
       }
-      // After the message is sent, if the user is not VIP, increment their message count in both the state and Firestore.
     const userDocRef = firebaseApp
       .firestore()
       .collection("users")
@@ -287,14 +276,11 @@ const [jetons, setJetons] = useState<number>(0);
 
       setIsSending(false);
     } catch (error) {
-      // Fallback for failed images
       if (pickedImageUri || image) {
-        // Remove the image URI from sendingImages state to no longer display it as "sending"
         setSendingImages((prevImages) =>
           prevImages.filter((uri) => uri !== (pickedImageUri || image))
         );
 
-        // Notify the user about the failure (you can modify this to fit your design)
         i18n.t("error");
       }
 
@@ -334,8 +320,8 @@ const [jetons, setJetons] = useState<number>(0);
               <View style={[styles.messageBox, styles.senderMessage]}>
                 <Image
                   source={{ uri: item.imageUrl }}
-                  style={{ ...styles.imageMessage, opacity: 0.5 }} // Set opacity for blurring effect
-                  blurRadius={5} // Add blur to the image to indicate it's uploading
+                  style={{ ...styles.imageMessage, opacity: 0.5 }}
+                  blurRadius={5} 
                 />
 
                 <ActivityIndicator
@@ -346,7 +332,6 @@ const [jetons, setJetons] = useState<number>(0);
               </View>
             );
           } else {
-            // Now TypeScript knows that item is of type Message.
             return (
               <View
                 style={[
@@ -398,9 +383,9 @@ const [jetons, setJetons] = useState<number>(0);
         onConfirm={() => {
           setLimitModalVisible(false);
         }}
-        iconName="vip1" // replace with your actual icon name
+        iconName="vip1"
         message={i18n.t("dailyLimitGetVip")}
-        buttonText={i18n.t("closeText")} // replace with your desired button text
+        buttonText={i18n.t("closeText")} 
       />
     </View>
   );

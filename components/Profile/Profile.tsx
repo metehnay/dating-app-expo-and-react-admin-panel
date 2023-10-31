@@ -42,9 +42,8 @@ const Profile = ({ navigation }: any) => {
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [modalCityVisible, setModalCityVisible] = useState(false);
   const [bioDialogVisible, setBioDialogVisible] = useState(false);
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
 
-  // Physical attributes state
   const [ModalVisible, setModalVisible] = useState(false);
   const [selectedHeight, setSelectedHeight] = useState<string>("");
   const [selectedWeight, setSelectedWeight] = useState<string>("");
@@ -58,7 +57,6 @@ const Profile = ({ navigation }: any) => {
 
   const handleSavePhysicalAttributes = async () => {
     try {
-      // Save physical attributes to Firebase
       await userRef.update({
         height: selectedHeight,
         weight: selectedWeight,
@@ -66,10 +64,8 @@ const Profile = ({ navigation }: any) => {
         hairColor: selectedHairColor,
       });
 
-      // Close the modal
       setHobbiesModalVisible(false);
 
-      // Alert user about successful save
       alert(i18n.t("profileUpdated"));
     } catch (error) {
       alert(i18n.t("error"));
@@ -92,16 +88,13 @@ const Profile = ({ navigation }: any) => {
   };
 const handleLogout = async () => {
   try {
-    // Sign out from Google
     await GoogleSignin.signOut();
 
-    // Sign out from Firebase
     await firebaseApp.auth().signOut();
 
     navigation.navigate("Home");
   } catch (error) {
-    console.error("Logout Error:", error); // Log the actual error for better debugging
-
+    console.error("Logout Error:", error); 
     alert(i18n.t("error"));
   }
 };
@@ -125,7 +118,7 @@ const handleLogout = async () => {
       const selectedImageUri = result.assets[0].uri;
 
       try {
-        setLoading(true); // Set loading to true before starting the upload
+        setLoading(true); 
 
         const fileBlob = await uriToBlob(selectedImageUri);
 
@@ -144,11 +137,11 @@ const handleLogout = async () => {
           imageUrl: downloadURL,
         });
 
-        setLoading(false); // Set loading to false after successful upload
+        setLoading(false); 
       } catch (error) {
         console.log(error);
         alert(i18n.t("error"));
-        setLoading(false); // Set loading to false on error
+        setLoading(false);
       }
     }
   };
@@ -237,7 +230,7 @@ const handleLogout = async () => {
             uid: currentUser?.uid,
             photoURL: currentUser?.photoURL,
             displayName: currentUser?.displayName,
-            isVip: false, // Default value
+            isVip: false,
           });
         }
       } catch (error) {
@@ -276,7 +269,6 @@ const handleLogout = async () => {
 
     setUserHobbies(selectedHobbies);
 
-    // Update the selected hobbies in Firebase
     updateHobbiesInFirebase(selectedHobbies);
   };
   return (

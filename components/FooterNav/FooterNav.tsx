@@ -48,11 +48,7 @@ const FooterNav = ({ navigationRef }: any) => {
   }, []);
 
 const handleNavigation = (route: string) => {
-  // Comment out the following lines to temporarily disable the isVip logic for FilterScreen
-  // if (route === "FilterScreen" && (!userData || !userData.isVip)) {
-  //   setShowModal(true);
-  //   return;
-  // }
+
 
   navigationRef.current?.navigate(route);
   setActiveRoute(route);
@@ -68,7 +64,7 @@ const handleNavigation = (route: string) => {
     {
       route: "PremiumScreen",
       icon: "shop",
-      customSize: 45,
+      customSize: 40,
     },
     {
       route: "ConversationsList",

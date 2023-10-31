@@ -1,4 +1,3 @@
-// Required imports
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -11,14 +10,11 @@ import {
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import * as Notifications from "expo-notifications";
-
-// Assuming the firebaseApp is correctly initialized in your firebaseConfig.js
 import { firebaseApp } from "../../firebaseConfig";
 import styles from "./style";
 import SVGComponent from "../SVGComponent";
 import { useTranslation } from "../../TranslationContext";
 
-// Interface definitions for TypeScript
 interface User {
   id: string;
   fullName: string;
@@ -29,7 +25,7 @@ interface Conversation {
   id?: string;
   userIds: string[];
   latestMessage: string;
-  latestMessageSenderId?: string; // Add this line
+  latestMessageSenderId?: string; 
   timestamp?: firebase.firestore.Timestamp;
   otherUser?: User;
   unread?: { [key: string]: boolean };
@@ -42,7 +38,6 @@ const ConversationsList = ({ navigation }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const i18n = useTranslation();
 
-  // Authentication state observer to get the current user's ID.
   useEffect(() => {
     const unsubscribe = firebaseApp.auth().onAuthStateChanged((authUser) => {
       if (authUser) {
@@ -52,7 +47,6 @@ const ConversationsList = ({ navigation }: any) => {
     return () => unsubscribe();
   }, []);
 
-  // Fetch the conversations that involve the current user.
   useEffect(() => {
     if (currentUserId) {
       setIsLoading(true);
@@ -104,7 +98,6 @@ const ConversationsList = ({ navigation }: any) => {
     }
   }, [currentUserId]);
 
-  // [1] Ask for permission and get the token.
   useEffect(() => {
     const registerForPushNotifications = async () => {
       let token;
@@ -124,7 +117,6 @@ const ConversationsList = ({ navigation }: any) => {
 
       token = (await Notifications.getExpoPushTokenAsync()).data;
 
-      // Save the token to the user's document in Firestore
       if (currentUserId) {
         firebaseApp.firestore().collection("users").doc(currentUserId).update({
           expoPushToken: token,
@@ -139,24 +131,20 @@ const ConversationsList = ({ navigation }: any) => {
       const subscription =
         Notifications.addNotificationResponseReceivedListener((response) => {
           const data = response.notification.request.content.data;
-          // Assuming the data contains the user id, navigate to the specific conversation screen
           navigation.navigate("MessageScreen", { user: data.user });
         });
 
       return () => subscription.remove();
     }, [navigation]);
 
-  // Handles the logic when a conversation is pressed.
   const handleConversationPress = (conversation: Conversation) => {
     if (conversation.otherUser) {
-      // Ensure we have both currentUserId and conversation.id before updating
       if (
         currentUserId &&
         conversation.id &&
         conversation.unread &&
         conversation.unread[currentUserId]
       ) {
-        // Update the unread status for the current user to false
         firebaseApp
           .firestore()
           .collection("conversations")
@@ -166,16 +154,13 @@ const ConversationsList = ({ navigation }: any) => {
           });
       }
 
-      // Navigate to the MessageScreen with the other user's details
       navigation.navigate("MessageScreen", { user: conversation.otherUser });
     }
   };
-  // Helper function to truncate the latest message in the conversation preview.
   const truncateMessage = (message: string) => {
     return message.length > 25 ? message.substring(0, 25) + "..." : message;
   };
 
-  // Main rendering logic for the component.
   return (
     <View style={{ flex: 1, padding: 16, backgroundColor: "#F5F5F5" }}>
       {isLoading ? (

@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     position: "relative",
   },
   buttonMonthlySelected: {
-    backgroundColor: "#1976D2", // Slightly darker shade than buttonMonthly
+    backgroundColor: "#1976D2", 
     padding: 15,
     borderRadius: 5,
     marginBottom: 10,
@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
   buttonYearlySelected: {
-    backgroundColor: "#388E3C", // Slightly darker shade than buttonYearly
+    backgroundColor: "#388E3C", 
     padding: 15,
     borderRadius: 5,
     width: "100%",

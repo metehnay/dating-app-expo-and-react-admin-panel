@@ -46,7 +46,7 @@ const InputBoxComponent: React.FC<InputBoxProps> = ({
             customHeight="25"
           />
         </Pressable>
-        {isVip ? ( // Render the "addphoto" button if user is VIP
+        {isVip ? (
           <Pressable
             onPress={() => {
               if (isVip) {
