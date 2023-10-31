@@ -1,3 +1,10 @@
+## Tech
+
+**Mobile App:** Expo React Native, RevenueCat, Firebase, Firebase FCM, Expo Location, i18n Translation
+
+**Admin Panel:** Firebase, React, Tailwind
+
+
 All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoesnotexist.com/). 
 
 ![Ekran görüntüsü 2023-10-31 201807](https://github.com/metehnay/expo-react-native-dating-app-and-tailwind-admin-panel/assets/99619400/9b4563c3-0410-4196-aea6-2807fe9642db)
