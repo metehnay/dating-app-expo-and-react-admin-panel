@@ -1,8 +1,16 @@
 ## Tech
 
-**Mobile App:** Expo React Native, RevenueCat, Firebase, Firebase FCM, Expo Location, i18n Translation
+**Mobile App:**
+- Expo React Native
+- RevenueCat, Firebase
+- Firebase FCM
+- Expo Location
+- i18n Translation
 
-**Admin Panel:** Firebase, React, Tailwind
+**Admin Panel:** 
+- Firebase
+- React
+- Tailwind
 
 
 All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoesnotexist.com/). 
