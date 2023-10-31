@@ -1,3 +1,11 @@
+## Content
+- [Tech](#tech)
+- [Demo](#demo)
+- [Mobile App Features](#features1)
+- [Admin Panel Features](#features2)
+- [Installation](#installation)
+- [License](#license)
+
 ## Tech
 
 **Mobile App:**
@@ -12,6 +20,7 @@
 - React
 - Tailwind
 
+## Demo
 
 All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoesnotexist.com/). 
 
@@ -23,11 +32,6 @@ All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoe
 
 9 Language support and Firebase backend. You can find admin panel on my profile. 
 
-## Content
-- [Mobile App Features](#features1)
-- [Admin Panel Features](#features2)
-- [Installation](#installation)
-- [License](#license)
 
 ## Features1
 - Country and Gender Filtering: For instance, a female user registered from Spain will only see male members from Spain.
