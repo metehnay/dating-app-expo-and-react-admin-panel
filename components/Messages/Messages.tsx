@@ -57,6 +57,7 @@ const MessageScreen = ({ route }: any) => {
   const [messageCount, setMessageCount] = useState<number>(0);
   const [isLimitModalVisible, setLimitModalVisible] = useState(false);
   const i18n = useTranslation();
+const [jetons, setJetons] = useState<number>(0);
 
   const toggleImageModal = (uri?: string) => {
     setModalImage(uri || null);
@@ -126,7 +127,7 @@ const MessageScreen = ({ route }: any) => {
           userUnsubscribe = userDocRef.onSnapshot((doc) => {
             if (doc.exists) {
               const userData = doc.data();
-              setIsVip(!!userData?.isVip); // setting the isVip status from firestore
+              setJetons(userData?.jetons || 0);
               setMessageCount(userData?.messageCount || 0); // setting the messageCount from firestore
             }
           });
@@ -214,11 +215,11 @@ const MessageScreen = ({ route }: any) => {
 
     setIsSending(true);
 
-    if (!isVip && messageCount >= 7) {
-      setLimitModalVisible(true);
-      setIsSending(false);
-      return;
-    }
+  if (jetons <= 0) {
+    setLimitModalVisible(true);
+    setIsSending(false);
+    return;
+  }
 
     try {
       let imageUrl = null;
@@ -270,16 +271,14 @@ const MessageScreen = ({ route }: any) => {
         return;
       }
       // After the message is sent, if the user is not VIP, increment their message count in both the state and Firestore.
-      if (!isVip) {
-        const userDocRef = firebaseApp
-          .firestore()
-          .collection("users")
-          .doc(currentUserId);
-        setMessageCount(messageCount + 1);
-        userDocRef.update({
-          messageCount: firebase.firestore.FieldValue.increment(1),
-        });
-      }
+    const userDocRef = firebaseApp
+      .firestore()
+      .collection("users")
+      .doc(currentUserId);
+    setJetons(jetons - 1);
+    userDocRef.update({
+      jetons: firebase.firestore.FieldValue.increment(-1),
+    });
 
       if (!pickedImageUri) {
         setText("");

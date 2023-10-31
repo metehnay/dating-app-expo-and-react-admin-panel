@@ -27,7 +27,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
           />
         )}
         <Pressable onPress={closeModal} style={styles.closeModal}>
-          <Text style={styles.closeText}>Kapat</Text>
+          <Text style={styles.closeText}>Close</Text>
         </Pressable>
       </View>
     </Modal>
