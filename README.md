@@ -1,4 +1,6 @@
-## Content
+9 different language support, Admin panel, Firebase, and RevenueCat. I'm continuing to develop it, new updates coming soon 🐈
+
+## Table
 - [Tech](#tech)
 - [Demo](#demo)
 - [Mobile App Features](#features1)
@@ -26,12 +28,6 @@ All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoe
 
 ![Ekran görüntüsü 2023-10-31 201807](https://github.com/metehnay/expo-react-native-dating-app-and-tailwind-admin-panel/assets/99619400/9b4563c3-0410-4196-aea6-2807fe9642db)
 ![gif](https://github.com/metehnay/expo-react-native-dating-app-and-tailwind-admin-panel/assets/99619400/3e98e69c-6d30-4141-bdcf-6e44580f7113)
-
-
-# React Native Dating App and Tailwind Admin Panel
-
-9 Language support and Firebase backend. You can find admin panel on my profile. 
-
 
 ## Features1
 - Country and Gender Filtering: For instance, a female user registered from Spain will only see male members from Spain.
