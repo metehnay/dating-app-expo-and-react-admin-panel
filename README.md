@@ -30,7 +30,7 @@ All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoe
 ![gif](https://github.com/metehnay/expo-react-native-dating-app-and-tailwind-admin-panel/assets/99619400/3e98e69c-6d30-4141-bdcf-6e44580f7113)
 
 ## Features1
-- Country and Gender Filtering: For instance, a female user registered from Spain will only see male members from Spain.
+- Country and Gender Filtering: For instance, a female user registered from Spain will only see male members from Spain. If no users left it will show US region.
 - Multilingual Support: Automatic translation based on device language across 9 different languages. Translations are powered by ChatGPT. Any inaccuracies can be rectified through the 'translations' file.
 - RevenueCat Integration: To manage your Firebase limits and revenues, message sending has been restricted. After 5 messages, new users are required to purchase a message package.
 - Enhanced Chat Experience: Users can send emojis and images to each other.
