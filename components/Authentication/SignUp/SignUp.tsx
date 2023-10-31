@@ -285,10 +285,11 @@ if (isGoogleSignIn) {
         id: uid,
         email,
         fullName,
-        regionCode: selectedCode,
+        regionCode: "TR",
         city: selectedCity,
         birthDate,
         gender,
+        jetons: 7,
         registeredTime: registeredTime,
       };
       const usersRef = firebaseApp.firestore().collection("users");

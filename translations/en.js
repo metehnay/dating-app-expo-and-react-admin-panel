@@ -193,6 +193,16 @@ const en = {
   payment_failed: "Payment failed. Please try again.",
   become_vip_and_gain_features: "Become a VIP and gain exclusive features!",
   examine: "Examine",
+
+  //HOME
+  signInAcceptance: "By signing in, you accept the",
+  terms: "Terms of Service",
+  and: "and",
+  privacyPolicy: "Privacy Policy",
+  continueWithGoogle: "Continue with Google",
+  continueWithEmail: "Continue with Email",
+  alreadyHaveAccount: "Already have an account?",
+  loginNow: "Log in",
 };
 
 export default en;

@@ -1,0 +1,28 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, body, :root {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  border: 8px solid #f3f4f6; /* Light gray */
+  border-radius: 50%;
+  border-top: 8px solid #374151; /* Darker gray */
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}

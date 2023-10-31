@@ -122,26 +122,26 @@ const signInWithGoogle = async () => {
       <Logo />
       <CustomInput
         iconName="mailicon"
-        placeholder={i18n.t("email")}
+        placeholder={i18n.t("emailPlaceholder")}
         onChangeText={setEmail}
         value={email}
       />
       <CustomInput
-        placeholder={i18n.t("password")}
+        placeholder={i18n.t("passwordPlaceholder")}
         onChangeText={setPassword}
         value={password}
         iconName="passicon"
         secureTextEntry
       />
       <Button
-        title={i18n.t("login")}
+        title={i18n.t("loginButton")}
         onPress={onLoginPress}
         textcolor="#fff"
         color="#2cc1d7"
       />
       <Pressable onPress={() => setLoginPressed(false)}>
         <Text style={{ textAlign: "center", marginTop: 10, color: "#2cc1d7" }}>
-          Geri Dön
+          {i18n.t("goBack")}
         </Text>
       </Pressable>
     </View>
@@ -162,31 +162,12 @@ const signInWithGoogle = async () => {
           }}
         />
       </View>
-      <Text
-        style={{
-          paddingTop: 8,
-          fontSize: 10,
-          textAlign: "center",
-          fontFamily: "Roboto",
-        }}
-      >
-        Oturum açarak{" "}
-        <Text style={{ color: "#2cc1d7" }}>
-          <Text onPress={handleTermsLinkPress}>Koşullar</Text>
-        </Text>{" "}
-        ve{" "}
-        <Text style={{ color: "#2cc1d7" }}>
-          <Text onPress={handlePrivacyPolicyLinkPress}>
-            Gizlilik Politikası
-          </Text>
-        </Text>{" "}
-        şartlarını kabul etmiş olursunuz{" "}
-      </Text>
+      
       <Pressable style={styles.customGoogleButton} onPress={signInWithGoogle}>
         <View style={styles.iconContainer}>
           <SVGComponent iconName="google" customWidth="35" customHeight="35" />
         </View>
-        <Text style={styles.buttonText}>Google ile devam et</Text>
+        <Text style={styles.buttonText}>{i18n.t("continueWithGoogle")}</Text>
       </Pressable>
 
       <Pressable
@@ -196,13 +177,13 @@ const signInWithGoogle = async () => {
         <View style={styles.iconContainer}>
           <SVGComponent iconName="mail" customWidth="35" customHeight="35" />
         </View>
-        <Text style={styles.buttonText}>E-posta ile devam et</Text>
+        <Text style={styles.buttonText}>{i18n.t("continueWithEmail")}</Text>
       </Pressable>
 
       <View style={styles.loginLinkContainer}>
-        <Text>Zaten hesabın var mı? </Text>
+        <Text>{i18n.t("alreadyHaveAccount")} </Text>
         <Pressable onPress={() => setLoginPressed(true)}>
-          <Text style={styles.loginLink}>GİRİŞ YAP</Text>
+          <Text style={styles.loginLink}>{i18n.t("loginNow")}</Text>
         </Pressable>
       </View>
     </View>
