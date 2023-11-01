@@ -208,7 +208,7 @@ function App() {
               name="Sign Up"
               component={SignUp}
               options={{
-                headerTitle: "Kayıt Ol",
+                headerTitle: "Sign Up",
               }}
             />
             <Stack.Screen
@@ -235,7 +235,7 @@ function App() {
               name="Profile"
               component={Profile}
               options={{
-                headerTitle: "Profilim",
+                headerTitle: "Profile",
               }}
             />
             <Stack.Screen
@@ -264,7 +264,7 @@ function App() {
               name="ConversationsList"
               component={ConversationsList}
               options={{
-                headerTitle: "Mesajlarım",
+                headerTitle: "Messages",
               }}
             />
 

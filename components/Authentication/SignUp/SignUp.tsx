@@ -161,11 +161,7 @@ useEffect(() => {
         </View>
       </Modal>
     );
-  /**
-   * Function to handle the next step button press.
-   * If on the first step, it checks if gender is selected.
-   * If on the second step, it triggers the registration process.
-   */
+ 
  
   const onNextStepPress = () => {
     if (step === 1) {
@@ -276,7 +272,7 @@ if (isGoogleSignIn) {
         city: selectedCity,
         birthDate,
         gender,
-        jetons: 7,
+        jetons: 8,
         registeredTime: registeredTime,
       };
       const usersRef = firebaseApp.firestore().collection("users");
