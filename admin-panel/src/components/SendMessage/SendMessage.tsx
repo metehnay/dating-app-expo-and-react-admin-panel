@@ -5,7 +5,6 @@ import "firebase/compat/auth";
 import { firebaseApp, functions } from "../../firebaseConfig";
 import firebase from "firebase/compat/app";
 
-// Define a type for a User
 type User = {
   id: string;
   fullName: string;
@@ -24,7 +23,6 @@ const [allUsers, setAllUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      // Fetch only bot users for the sender dropdown
       const botUsersCollection = await db
         .collection("users")
         .where("isBotUser", "==", true)
@@ -37,7 +35,6 @@ const [allUsers, setAllUsers] = useState<User[]>([]);
 
       if (botUsersData.length) setCurrentUserId(botUsersData[0].id);
 
-      // Fetch all users for the recipient dropdown
       const allUsersCollection = await db.collection("users").get();
       const allUsersData: User[] = allUsersCollection.docs.map((doc) => ({
         id: doc.id,
@@ -77,7 +74,6 @@ const [allUsers, setAllUsers] = useState<User[]>([]);
     const handleSelectBotUser = async (userId: string) => {
       setCurrentUserId(userId);
 
-      // Fetch the email of the selected bot user
       const userDoc = await db.collection("users").doc(userId).get();
       if (!userDoc.exists) {
         console.error("Bot user not found in the database");
@@ -133,7 +129,6 @@ const [allUsers, setAllUsers] = useState<User[]>([]);
           createdAt: serverTimestamp(),
         });
 
-        // Send push notification after sending the message to each user
         await sendPushNotification(user.id, message);
       } catch (error) {
         console.error("Error sending message:", error);
@@ -153,7 +148,6 @@ const [allUsers, setAllUsers] = useState<User[]>([]);
 
     setSending(true);
 
-    // If "Send to All" is checked or no recipient is selected
     if (!recipientUserId || sendToAll) {
       for (const user of allUsers) {
         const conversationId = [currentUserId, user.id].sort().join("_");
@@ -179,7 +173,6 @@ const [allUsers, setAllUsers] = useState<User[]>([]);
             createdAt: serverTimestamp(),
           });
 
-          // Send push notification after sending the message
           await sendPushNotification(user.id, message);
         } catch (error) {
           console.error("Error sending message:", error);
@@ -210,7 +203,6 @@ const [allUsers, setAllUsers] = useState<User[]>([]);
           createdAt: serverTimestamp(),
         });
 
-        // Send push notification after sending the message
         await sendPushNotification(recipientUserId, message);
       } catch (error) {
         console.error("Error sending message:", error);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { firebaseApp } from "../../firebaseConfig";
 import { Link } from "react-router-dom";
-import CountryFlag from 'react-country-flag'; // Change this to the correct import path if different
+import CountryFlag from 'react-country-flag'; 
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
@@ -19,7 +19,7 @@ interface Conversation {
   userIds: string[];
   latestMessage: string;
   timestamp?: any;
-  users?: User[]; // Change the name to "users" to hold both users
+  users?: User[]; 
   unread?: { [key: string]: boolean };
 }
 
@@ -53,7 +53,6 @@ const ConversationsList: React.FC = () => {
     if (Notification.permission === "granted") {
       new Notification("New conversation started!", {
         body: "Click to view the conversation.",
-        // you can add an icon here if you wish
       });
     }
   };

@@ -22,27 +22,24 @@ const AdminManageData: React.FC = () => {
     }
   };
 
-  // Usage in your component
   const deleteImagesInFolder = async (folderPath: string) => {
     try {
-      const storageRef = storage.ref(); // Use the imported storage
+      const storageRef = storage.ref(); 
       const folderRef = storageRef.child(folderPath);
 
       folderRef
         .listAll()
         .then((res) => {
-          // Collect promises to delete each file in the folder
           const deletePromises = res.items.map((itemRef) => {
             return itemRef.delete().catch((err) => {
               console.error(`Error deleting file ${itemRef.name}:`, err);
-              return err; // Returning error to not break the Promise.all
+              return err;
             });
           });
 
           return Promise.all(deletePromises);
         })
         .then((results) => {
-          // Filter for errors to identify failed deletions
           const errors = results.filter((result) => result instanceof Error);
           if (errors.length === 0) {
             console.log(`All files in folder ${folderPath} have been deleted.`);
@@ -58,14 +55,12 @@ const AdminManageData: React.FC = () => {
     }
   };
 
-  // Usage in your component
   const handleDeleteImages = async () => {
     if (
       window.confirm(
         "Are you sure you want to delete all images in the 'images/' folder? This cannot be undone!"
       )
     ) {
-      // Call the function to delete images in the 'images/' folder
       await deleteImagesInFolder("images/");
       alert("All images have been deleted!");
     }

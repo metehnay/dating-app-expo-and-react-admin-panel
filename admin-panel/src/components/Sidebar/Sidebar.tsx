@@ -28,7 +28,6 @@ const Sidebar: React.FC = () => {
       <div className="mb-10 flex items-center space-x-3">
         <div className="bg-gray-100 text-gray-900 rounded-full p-3">
           <span className="text-2xl font-bold">AP</span>{" "}
-          {/* This is a simple text logo for Admin Panel */}
         </div>
         <h1 className="text-2xl font-bold border-b border-gray-700 pb-2">
           Admin

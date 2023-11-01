@@ -28,10 +28,9 @@ const [isModalOpen, setModalOpen] = useState(false);
 const [startAfter, setStartAfter] = useState<QueryDocumentSnapshot | null>(
   null
 );
-  const [hasMoreUsers, setHasMoreUsers] = useState(true); // Flag to check if there are more users
-
+  const [hasMoreUsers, setHasMoreUsers] = useState(true);
   useEffect(() => {
-    fetchUsers(); // Fetch initial users
+    fetchUsers(); 
   }, []);
 
   const fetchUsers = async () => {
@@ -50,7 +49,6 @@ const [startAfter, setStartAfter] = useState<QueryDocumentSnapshot | null>(
       })) as User[];
 
       if (newUsers.length < 15) {
-        // If less than 10 users were fetched, there are no more users
         setHasMoreUsers(false);
       } else {
         setStartAfter(
@@ -70,7 +68,7 @@ setUsers((prevUsers) => {
   };
 
   const handleLoadMore = () => {
-    fetchUsers(); // Fetch the next 10 users
+    fetchUsers(); 
   };
 
 const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +86,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const handleSave = async () => {
     try {
       if (currentUser) {
-        let updatedUser = { ...currentUser }; // Create a copy of the currentUser
+        let updatedUser = { ...currentUser };
 
         if (selectedImage) {
           const storageRef = storage.ref();
@@ -96,13 +94,11 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           await fileRef.put(selectedImage);
           const fileURL = await fileRef.getDownloadURL();
 
-          updatedUser.imageUrl = fileURL; // Update the imageUrl in the copied user object
+          updatedUser.imageUrl = fileURL; 
         }
 
-        // Update the user's data in Firestore
         await db.collection("users").doc(updatedUser.id).update(updatedUser);
 
-        // Update the user's data in the local state
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.id === updatedUser.id ? updatedUser : user
@@ -119,10 +115,8 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
   const handleRemove = async (userId: string) => {
     try {
-      // Remove the user from Firestore
       await db.collection("users").doc(userId).delete();
 
-      // Update the local state to remove the deleted user
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
     } catch (error) {
       console.error("Error removing user:", error);

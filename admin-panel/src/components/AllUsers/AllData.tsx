@@ -32,7 +32,7 @@ const AllData = () => {
       viewBox="0 0 50 50"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props} // This spreads any additional props onto the svg
+      {...props} 
     >
       <circle cx="25" cy="15" r="12" fill="currentColor" />
       <path
@@ -51,7 +51,7 @@ const AllData = () => {
       viewBox="0 0 50 50"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props} // This spreads any additional props onto the svg
+      {...props} 
     >
       <path
         d="M25 2L30.4548 18.0455H47.9091L33.8636 29.3182L39.3182 45.3636L25 34.0909L10.6818 45.3636L16.1364 29.3182L2.09091 18.0455H19.5455L25 2Z"
@@ -67,7 +67,7 @@ const AllData = () => {
      viewBox="0 0 50 50"
      fill="none"
      xmlns="http://www.w3.org/2000/svg"
-     {...props} // This spreads any additional props onto the svg
+     {...props} 
    >
      <path
        d="M25 2C12.2975 2 2 11.2975 2 24C2 36.7025 12.2975 46 25 46V50L39.5 43.5H42.5C46.0898 43.5 49 40.5898 49 37V24C49 11.2975 37.7025 2 25 2Z"
@@ -181,7 +181,6 @@ const getFlag = (regionCode: string) => {
             </thead>
             <tbody>
               {usersList.map((user) => {
-                // Convert the registeredTime to a readable format
                 const date = new Date(user.registeredTime);
                 const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from "react";
 import { db } from "../../firebaseConfig";
 import { serverTimestamp } from "@firebase/firestore";
 
-// Define types
 type User = {
   fullName: string;
   imageUrl?: string;
@@ -56,7 +55,7 @@ const AdminMessageLog: React.FC = () => {
        const fetchedMessages = snapshot.docs.map((doc) => {
          const data = doc.data() as Message;
          return {
-           ...data, // Assuming data already contains an 'id' property
+           ...data, 
          };
        });
        setAllMessages(fetchedMessages);

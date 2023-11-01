@@ -3,12 +3,11 @@ import { I18n } from "i18n-js";
 import * as Localization from "expo-localization";
 import translations from "./localization";
 
-const i18n = new I18n() as any; // Force casting to 'any' to bypass TypeScript checks
+const i18n = new I18n() as any; 
 
-// Set up i18n-js translations and configurations
 i18n.translations = translations;
-i18n.fallbacks = true; // This is crucial for enabling fallbacks
-i18n.defaultLocale = "en"; // Set default locale to English
+i18n.fallbacks = true; 
+i18n.defaultLocale = "en"; 
 
 const translateWithFallback = (key: string, locale: string = i18n.locale) => {
   const translation = i18n.translate(key, { locale });
@@ -16,28 +15,24 @@ const translateWithFallback = (key: string, locale: string = i18n.locale) => {
     return translation;
   }
 
-  // If missing in current locale, try English
   if (locale !== "en") {
     return i18n.translate(key, { locale: "en" });
   }
 
-  return key; // If it's also missing in English, return the key itself
+  return key; 
 };
 
-// Extracting supported locales from translations object
 const supportedLocales = Object.keys(translations);
 
-// Extracting detected locale and language
-const detectedLocale = Localization.locale; // e.g. 'de-DE'
-const detectedLanguage = detectedLocale.split("-")[0]; // e.g. 'de'
+const detectedLocale = Localization.locale;
+const detectedLanguage = detectedLocale.split("-")[0]; 
 
-// Verifying and setting the locale, with appropriate fallbacks
 if (supportedLocales.includes(detectedLocale)) {
   i18n.locale = detectedLocale;
 } else if (supportedLocales.includes(detectedLanguage)) {
   i18n.locale = detectedLanguage;
 } else {
-  i18n.locale = "en"; // final fallback to English
+  i18n.locale = "en"; 
 }
 
 const TranslationContext = createContext({

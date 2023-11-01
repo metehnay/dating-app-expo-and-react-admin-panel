@@ -36,7 +36,7 @@ const [expoPushToken, setExpoPushToken] = useState<string>(
   const [birthDate, setBirthDate] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null); // Declare imageUrl here
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [hobbies, setHobbies] = useState<string[]>([]);
 const [regionCode, setRegionCode] = useState<string>("TR");
 
@@ -48,7 +48,7 @@ const [loading, setLoading] = useState(false);
 
     { placeholder: "Full Name", value: fullName, setter: setFullName },
     {
-      placeholder: "Region Codes (comma-separated)", // This will trigger the dropdown
+      placeholder: "Region Codes (comma-separated)", 
       value: regionCode,
       setter: setRegionCode,
     },
@@ -57,7 +57,7 @@ const [loading, setLoading] = useState(false);
     { placeholder: "Weight", value: weight, setter: setWeight },
     { placeholder: "Gender", value: gender, setter: setGender },
     {
-      placeholder: "Hobbies (comma-separated)", // or use a multi-select or other input method
+      placeholder: "Hobbies (comma-separated)", 
       value: hobbies.join(", "),
       setter: (hobbyString: string) =>
         setHobbies(hobbyString.split(", ").map((hobby) => hobby.trim())),
@@ -77,13 +77,10 @@ const [loading, setLoading] = useState(false);
     let currentIndex = array.length,
       randomIndex;
 
-    // While there remain elements to shuffle...
     while (currentIndex !== 0) {
-      // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
-      // And swap it with the current element.
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex],
         array[currentIndex],
@@ -94,16 +91,10 @@ const [loading, setLoading] = useState(false);
   };
 
   const generateRandomData = () => {
-    // Generate random data for form fields
     setEmail("ex123" + Math.floor(Math.random() * 95990) + "@example.com");
     setPassword("442442");
 
-    // Generate random Turkish eye color
 
-    // Generate random Turkish hair color
-
-
-    // Generate random birth date between 1970 and 2023
     const randomYear = Math.floor(Math.random() * (2004 - 1985)) + 1985;
     const randomMonth = String(Math.floor(Math.random() * 12) + 1).padStart(
       2,
@@ -124,13 +115,11 @@ const [loading, setLoading] = useState(false);
     const randomHeight = Math.floor(Math.random() * (181 - 155 + 1)) + 155;
     setHeight(randomHeight.toString());
 
-    // Generate random weight between 50 and 80
     const randomWeight = Math.floor(Math.random() * (80 - 50 + 1)) + 50;
     setWeight(randomWeight.toString());
     setGender("female");
     
 
-    // Select a random city
     const randomCity =
       turkishCities[Math.floor(Math.random() * turkishCities.length)];
     setCity(randomCity);
@@ -156,14 +145,13 @@ const [loading, setLoading] = useState(false);
         success: (compressedFile) => {
           const storageRef = firebaseApp
             .storage()
-            .ref(`user-images/resized/${file.name}`); // Use the original file's name here
+            .ref(`user-images/resized/${file.name}`);
 
           const uploadTask = storageRef.put(compressedFile);
 
           uploadTask.on(
             "state_changed",
             (snapshot) => {
-              // Handle progress if necessary
             },
             (error) => {
               console.error("Failed to upload image:", error);
@@ -188,7 +176,7 @@ const [loading, setLoading] = useState(false);
 
     const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const registeredTime = new Date().toISOString(); // Get the current time in ISO string format
+      const registeredTime = new Date().toISOString(); 
 
       try {
         const userCredential = await firebaseApp
@@ -202,7 +190,7 @@ const [loading, setLoading] = useState(false);
             .doc(userCredential.user.uid);
           await userDocRef.set({
             id: userCredential.user.uid,
-            email: email, // <-- Add this line
+            email: email, 
             fullName: fullName,
             isBotUser: true,
             expoPushToken: expoPushToken,
@@ -213,7 +201,7 @@ const [loading, setLoading] = useState(false);
             registeredTime: registeredTime,
             city: city,
             gender: gender,
-            imageUrl: imageUrl, // Use the imageUrl from the state
+            imageUrl: imageUrl, 
             birthDate: birthDate,
           });
         }
@@ -228,7 +216,7 @@ const [loading, setLoading] = useState(false);
         setImage(null);
         setError(null);
         setHobbies([]);
-        setImageUrl(null); // Clear the imageUrl state
+        setImageUrl(null); 
       } catch (error) {
         console.log(error);
       }
