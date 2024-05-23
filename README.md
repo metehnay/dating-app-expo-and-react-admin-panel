@@ -4,7 +4,7 @@
 - [Demo](#demo)
 - [Mobile App Features](#features1)
 - [Admin Panel Features](#features2)
-- [Installation](#installation)
+- [Important](#installation)
 - [License](#license)
 
 ## Tech
@@ -46,32 +46,13 @@ All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoe
 
 ## Installation
 
-since RevenueCat package doesn't support expo go, you need to install *expo-dev*
+RevenueCat package doesn't support expo go, you need to install *expo-dev*
+
+do not run expo-go.
 
 ```
 expo install expo-dev-client
 ```
-
-Change firebaseConfig.tsx file with your firebase config.
-`Note: For your own security secure this file in .env!`
-
-```
-
-// Initialize Firebase
-const firebaseConfig = {
-};
-
-```
-
-Find Premium component in components and change google_id with your revenuecat googleid.
-   `Note: If you haven't used revenuecat before. Please follow the Revenuecat document for this step. `
-
-```
-
-// Initialize Firebase
-const APIKeys = {
-  google: "YOUR GOOGLE  ID",
-};
 
 ```
 
