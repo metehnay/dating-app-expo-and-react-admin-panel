@@ -40,7 +40,6 @@ All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoe
 ## Features2
 - Firebase Data Editor: Bulk delete messages, images, and conversations.
 - Detailed Statistical Insights: For instance, statistics such as the number of users who registered in the last 30 days and the last 7 days, and their countries.
-- Quick Bot User Creation: All you need to do is change the country for the user. (Automatic form filling is currently active only for Turkish profiles.)
 - Send Notifications to All Users: Reach out to your entire user base with announcements or updates.
 - Edit and Delete User Information: Admin tools for user data management.
 
