@@ -1,4 +1,3 @@
-9 different language support, Admin panel, Firebase, and RevenueCat. I'm continuing to develop it, new updates coming soon 🐈
 
 ## Table
 - [Tech](#tech)
