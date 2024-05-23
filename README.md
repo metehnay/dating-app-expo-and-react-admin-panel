@@ -46,7 +46,7 @@ All Demo User Images created with [ThisPersonDoesNotExist](https://thispersondoe
 
 ## Installation
 
-Install expo dev client because some of the revenuecat packages doesn't support expo go. 
+since RevenueCat package doesn't support expo go, you need to install *expo-dev*
 
 ```
 expo install expo-dev-client
