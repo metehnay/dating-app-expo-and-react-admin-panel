@@ -11,8 +11,8 @@
 
 **Mobile App:**
 - Expo React Native
-- RevenueCat, Firebase
-- Firebase FCM
+- RevenueCat
+- Firebase and Firebase FCM 
 - Expo Location
 - i18n Translation
 
